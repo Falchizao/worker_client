@@ -14,8 +14,9 @@ class _OffersPageState extends State<OffersPage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        backgroundColor: const Color.fromARGB(255, 162, 194, 216),
         body: ListView.builder(
-          itemCount: 10, // Replace with the actual number of posts
+          itemCount: 2, // Replace with the actual number of posts
           itemBuilder: (BuildContext context, int index) {
             return Card(
               child: Column(
@@ -24,13 +25,13 @@ class _OffersPageState extends State<OffersPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(5),
                         child: Text(
                           faker.job.title(),
                           style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
                         ),
                       ),
                       Padding(
@@ -38,8 +39,7 @@ class _OffersPageState extends State<OffersPage> {
                         child: Text(
                           faker.lorem.sentence(),
                           style: const TextStyle(
-                            fontSize: 16,
-                          ),
+                              fontSize: 16, color: Colors.blueGrey),
                         ),
                       ),
                       // Image.asset(
@@ -51,6 +51,12 @@ class _OffersPageState extends State<OffersPage> {
                         children: [
                           IconButton(
                             icon: const Icon(Icons.info),
+                            onPressed: () {
+                              // Add your like action here
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.star),
                             onPressed: () {
                               // Add your like action here
                             },

@@ -19,7 +19,7 @@ class _FeedPageState extends State<FeedPage> {
     StarredPage(),
     SearchPage(),
     ChatPage(),
-    const ProfilePage(),
+    ProfilePage(),
   ];
 
   @override

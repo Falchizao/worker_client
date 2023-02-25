@@ -9,8 +9,10 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  File _backgroundImage = File('images/baam.png');
-  File _profileImage = File('images/baam.png');
+  late File _backgroundImage;
+  late File _profileImage;
+  late TextEditingController _skillController = TextEditingController();
+  late TextEditingController _descriptionController = TextEditingController();
   final picker = ImagePicker();
 
   Future<void> _selectBackgroundImage() async {
@@ -20,6 +22,22 @@ class _ProfilePageState extends State<ProfilePage> {
         _backgroundImage = File(pickedFile.path);
       }
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _skillController = TextEditingController();
+    _descriptionController = TextEditingController();
+    _backgroundImage = File('images/baam.png');
+    _profileImage = File('images/baam.png');
+  }
+
+  @override
+  void dispose() {
+    _skillController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
   }
 
   Future<void> _selectProfileImage() async {
@@ -68,9 +86,46 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
             ),
             const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Skills',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    controller: _skillController,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter your skills',
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Description',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    controller: _descriptionController,
+                    maxLines: 5,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter a description',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
             TextButton(
               onPressed: () {},
               child: const Text('Save'),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Generate Portfolio!'),
             ),
           ],
         ),

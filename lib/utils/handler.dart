@@ -3,7 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 void handleToast(String msg) {
   Fluttertoast.showToast(
-      msg: "Error on register",
+      msg: msg,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,

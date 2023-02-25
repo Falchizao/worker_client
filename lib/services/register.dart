@@ -24,7 +24,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final _confirmationController = TextEditingController();
   User user = User('', '', '');
   Future registerUser() async {
-    var response = await http.post('$BASE_URL/$REGISTER',
+    var response = await http.post(Uri.parse('$BASE_URL/$REGISTER'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'username': user.username,

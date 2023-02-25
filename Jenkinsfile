@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Cloning') {
             steps {
-                git branch: 'master', url: 'https://github.com/your/repository.git'
+                git branch: 'master', url: 'https://github.com/Falchizao/scarlet-graph-client'
             }
         }
         

@@ -3,6 +3,8 @@ import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../services/portfolioGenerator.dart';
+
 class ProfilePage extends StatefulWidget {
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -124,7 +126,11 @@ class _ProfilePageState extends State<ProfilePage> {
               child: const Text('Save'),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () async {
+                final pdf = await generatePdf();
+                final file = File('portfolio.pdf');
+                await file.writeAsBytes(await pdf.save());
+              },
               child: const Text('Generate Portfolio!'),
             ),
           ],

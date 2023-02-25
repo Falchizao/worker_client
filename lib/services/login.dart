@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   User user = User('', '', '');
   Future loginUser() async {
     var url = '$BASE_URL/$LOGIN';
-    var response = await http.post(url,
+    var response = await http.post(Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'username': user.username,

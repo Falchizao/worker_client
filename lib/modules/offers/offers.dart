@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:faker/faker.dart';
+import '../../services/share.dart';
+import '../../utils/handler.dart';
 
 class OffersPage extends StatefulWidget {
   const OffersPage({super.key});
@@ -16,7 +18,7 @@ class _OffersPageState extends State<OffersPage> {
       home: Scaffold(
         backgroundColor: const Color.fromARGB(255, 162, 194, 216),
         body: ListView.builder(
-          itemCount: 2, // Replace with the actual number of posts
+          itemCount: 12, // Replace with the actual number of posts
           itemBuilder: (BuildContext context, int index) {
             return Card(
               child: Column(
@@ -70,6 +72,7 @@ class _OffersPageState extends State<OffersPage> {
                           IconButton(
                             icon: const Icon(Icons.share),
                             onPressed: () {
+                              shareViaWhatsApp('teste');
                               // Add your share action here
                             },
                           ),
@@ -81,6 +84,12 @@ class _OffersPageState extends State<OffersPage> {
               ),
             );
           },
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            handleToast('SOON');
+          },
+          child: const Icon(Icons.add),
         ),
       ),
     );

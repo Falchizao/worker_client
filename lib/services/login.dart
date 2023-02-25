@@ -162,35 +162,14 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(
-                    height: 16.0,
+                    height: 10.0,
                   ),
-                  ElevatedButton(
+                  TextButton(
                     onPressed: () {
                       Get.to(() => const LetsGetStartedPage());
                     },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.lightBlue[900],
-                      backgroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32.0),
-                      ),
-                    ),
-                    child: Text(
-                      'Register',
-                      style: TextStyle(
-                        color: Colors.lightBlue[900],
-                        fontSize: 16.0,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                  TextButton(
-                    onPressed: () {},
                     child: const Text(
-                      'Already have an account?',
+                      'Does not have an account?',
                       style: TextStyle(
                         color: Colors.white,
                       ),

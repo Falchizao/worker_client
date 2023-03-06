@@ -162,7 +162,35 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(
-                    height: 10.0,
+                    height: 7.0,
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      handleToast("Sign in with google");
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.lightBlue[900],
+                      backgroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32.0),
+                      ),
+                    ),
+                    icon: Image.asset(
+                      'images/google.png',
+                      height: 30,
+                      width: 30,
+                    ),
+                    label: Text(
+                      'Sign in with google',
+                      style: TextStyle(
+                        color: Colors.lightBlue[900],
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 7.0,
                   ),
                   TextButton(
                     onPressed: () {

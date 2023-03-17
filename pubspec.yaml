@@ -29,8 +29,9 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  flutter_svg: 
+  flutter_svg: ^2.0.3 
   flutter_staggered_grid_view: ^0.4.0
+
   google_fonts: ^4.0.3
   http: ^0.13.5
   url_launcher: ^6.1.10
@@ -40,7 +41,7 @@ dependencies:
   shared_preferences: ^2.0.18
   pdf: ^3.9.0
   flutter_secure_storage: ^8.0.0
-  image_picker: ^0.8.6+3
+  image_picker: ^0.8.7
   flutter:
     sdk: flutter
 

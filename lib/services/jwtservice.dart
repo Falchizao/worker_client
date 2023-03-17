@@ -1,4 +1,4 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class JwtService {
   static final JwtService _singleton = JwtService._internal();
@@ -9,24 +9,20 @@ class JwtService {
 
   JwtService._internal();
 
-  final _storage = const FlutterSecureStorage();
-  final _key = 'jwt_token';
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   Future<String?> getToken() async {
-    final token = await _storage.read(key: _key);
-    return token;
+    final SharedPreferences prefs = await _prefs;
+    return prefs.getString('jwt_token');
   }
 
-  Future<void> saveToken(String token) async {
-    await _storage.write(key: _key, value: token);
+  Future<void> setToken(String token) async {
+    final SharedPreferences prefs = await _prefs;
+    await prefs.setString('jwt_token', token);
   }
 
-  Future<void> deleteToken() async {
-    await _storage.delete(key: _key);
-  }
-
-  bool hasToken() {
-    final token = _storage.read(key: _key);
-    return token != null;
+  Future<void> removeToken() async {
+    final SharedPreferences prefs = await _prefs;
+    await prefs.remove('jwt_token');
   }
 }

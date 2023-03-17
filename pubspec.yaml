@@ -37,6 +37,7 @@ dependencies:
   fluttertoast: ^8.0.8
   faker: ^2.1.0
   get:
+  shared_preferences: ^2.0.18
   pdf: ^3.9.0
   flutter_secure_storage: ^8.0.0
   image_picker: ^0.8.6+3

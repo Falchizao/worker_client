@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:scarlet_graph/services/register.dart';
+import '../../services/user_type.dart';
 
 class LetsGetStartedPage extends StatefulWidget {
   const LetsGetStartedPage({super.key});
@@ -58,7 +58,7 @@ class _LetsGetStartedPageState extends State<LetsGetStartedPage> {
             const SizedBox(height: 200),
             ElevatedButton(
               onPressed: () {
-                Get.to(() => const RegisterPage());
+                Get.to(() => SelectPage());
               },
               child: const Text('Let`s get started'),
             ),

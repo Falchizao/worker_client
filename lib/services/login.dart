@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
         }));
 
     if (response.statusCode == 200) {
-      JwtService().saveToken(response.body);
+      JwtService().setToken(response.body);
       Get.to(() => FeedPage());
     } else {
       handleToast(response.body);

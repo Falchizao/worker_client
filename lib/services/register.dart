@@ -28,7 +28,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future registerUser() async {
     user.role = role;
-    print("entrou");
     var response = await http.post(Uri.parse('$BASE_URL/$REGISTER'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
@@ -38,7 +37,6 @@ class _RegisterPageState extends State<RegisterPage> {
         }));
 
     if (response.statusCode == 200) {
-      print('Success');
       handleToast(response.body);
       Get.offAll(LoginPage());
     } else {

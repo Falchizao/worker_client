@@ -9,7 +9,15 @@ class SelectPage extends StatefulWidget {
 
 class _SelectPageState extends State<SelectPage> {
   int _selectedIndex = -1;
+  String roleDescText = 'Please, select a user role';
+  Color companyColor = Colors.grey;
+  Color candidateColor = Colors.grey;
+
   final List<String> _options = ['Candidate', 'Company'];
+  final List<String> _roles = [
+    'Apply to offers, receive emails when you get accepted, generate a dynamic portifolio from you profile and chat with your connections!',
+    'Create offers, receive emails when you someone applies to you offer, chat with the candidates and your connections!',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -18,19 +26,43 @@ class _SelectPageState extends State<SelectPage> {
       appBar: AppBar(
         title: const Text('Select an user type'),
       ),
-      body: ListView.builder(
-        itemCount: _options.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(_options[index]),
-            trailing: _selectedIndex == index ? const Icon(Icons.check) : null,
-            onTap: () {
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ElevatedButton(
+            child: const Text('Candidate'),
+            style: ElevatedButton.styleFrom(
+              primary: candidateColor, // Background color
+            ),
+            onPressed: () {
               setState(() {
-                _selectedIndex = index;
+                _selectedIndex = 0;
+                companyColor = Colors.grey;
+                candidateColor = Colors.blue;
+                roleDescText = _roles[_selectedIndex];
               });
             },
-          );
-        },
+          ),
+          ElevatedButton(
+            child: const Text('Company'),
+            style: ElevatedButton.styleFrom(
+              primary: companyColor, // Background color
+            ),
+            onPressed: () {
+              setState(() {
+                _selectedIndex = 1;
+                companyColor = Colors.blue;
+                candidateColor = Colors.grey;
+                roleDescText = _roles[_selectedIndex];
+              });
+            },
+          ),
+          const SizedBox(height: 16.0),
+          Text(
+            roleDescText,
+            style: const TextStyle(fontSize: 24.0),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _selectedIndex != -1 ? _onSubmitPressed : null,
@@ -42,7 +74,6 @@ class _SelectPageState extends State<SelectPage> {
   }
 
   void _onSubmitPressed() {
-    Get.to(() => RegisterPage());
-    Navigator.pop(context, _options[_selectedIndex]);
+    Get.to(() => const RegisterPage());
   }
 }

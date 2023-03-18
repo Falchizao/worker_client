@@ -197,7 +197,7 @@ class _LoginPageState extends State<LoginPage> {
                       Get.to(() => const LetsGetStartedPage());
                     },
                     child: const Text(
-                      'Does not have an account?',
+                      'Don´t have an account yet?  Sign Up',
                       style: TextStyle(
                         color: Colors.white,
                       ),

@@ -233,7 +233,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       width: 30,
                     ),
                     label: Text(
-                      'Sign in with google',
+                      'Register with google',
                       style: TextStyle(
                         color: Colors.lightBlue[900],
                         fontSize: 16.0,

@@ -32,7 +32,7 @@ class _SelectPageState extends State<SelectPage> {
         ),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -75,6 +75,17 @@ class _SelectPageState extends State<SelectPage> {
             style: const TextStyle(
               fontSize: 22.0,
               color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 10.0),
+          Text(
+            _selectedIndex != 0 ? '' : '* This option is only for woman',
+            textAlign: TextAlign.center,
+            textDirection: TextDirection.ltr,
+            style: GoogleFonts.pacifico(
+              color: const Color.fromARGB(255, 252, 209, 205),
+              fontWeight: FontWeight.bold,
+              fontSize: 20.0,
             ),
           ),
         ],

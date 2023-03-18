@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import "package:http/http.dart" as http;
@@ -19,12 +18,15 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final int role;
   _RegisterPageState(this.role);
   final _formKey = GlobalKey<FormState>();
   final _confirmationController = TextEditingController();
-  User user = User('', '', '');
+
+  int role;
+  User user = User('', '', '', 0);
+
   Future registerUser() async {
+    user.role = role;
     var response = await http.post(Uri.parse('$BASE_URL/$REGISTER'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({

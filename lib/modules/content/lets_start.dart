@@ -14,8 +14,10 @@ class _LetsGetStartedPageState extends State<LetsGetStartedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       backgroundColor: const Color.fromARGB(255, 13, 66, 105),
       appBar: AppBar(
+        elevation: 0,
         title: Text(
           'Welcome!',
           style: GoogleFonts.pacifico(

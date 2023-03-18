@@ -31,7 +31,7 @@ environment:
 dependencies:
   flutter_svg: ^2.0.3 
   flutter_staggered_grid_view: ^0.4.0
-
+  flutter_launcher_icons: ^0.12.0
   google_fonts: ^4.0.3
   http: ^0.13.5
   url_launcher: ^6.1.10
@@ -44,6 +44,11 @@ dependencies:
   image_picker: ^0.8.7
   flutter:
     sdk: flutter
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "images/baam.png"
 
 
   # The following adds the Cupertino Icons font to your application.

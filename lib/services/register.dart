@@ -10,15 +10,17 @@ import 'package:scarlet_graph/utils/requests.dart';
 import '../models/user_model.dart';
 import '../utils/validate.dart';
 
-void main() => runApp(const RegisterPage());
-
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+  final int role;
+
+  RegisterPage({super.key, required this.role});
   @override
-  _RegisterPageState createState() => _RegisterPageState();
+  _RegisterPageState createState() => _RegisterPageState(this.role);
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final int role;
+  _RegisterPageState(this.role);
   final _formKey = GlobalKey<FormState>();
   final _confirmationController = TextEditingController();
   User user = User('', '', '');

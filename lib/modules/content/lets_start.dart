@@ -32,7 +32,7 @@ class _LetsGetStartedPageState extends State<LetsGetStartedPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text(
             'Create your portfolio and search for jobs',
             textAlign: TextAlign.center,

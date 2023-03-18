@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import "package:http/http.dart" as http;
+import 'package:scarlet_graph/services/login.dart';
 import 'package:scarlet_graph/utils/constants.dart';
 import 'package:scarlet_graph/utils/handler.dart';
 import 'package:scarlet_graph/utils/requests.dart';
@@ -27,6 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future registerUser() async {
     user.role = role;
+    print("entrou");
     var response = await http.post(Uri.parse('$BASE_URL/$REGISTER'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
@@ -36,9 +38,11 @@ class _RegisterPageState extends State<RegisterPage> {
         }));
 
     if (response.statusCode == 200) {
+      print('Success');
       handleToast(response.body);
+      Get.offAll(LoginPage());
     } else {
-      handleToast("Error");
+      handleToast(response.body);
     }
   }
 
@@ -104,7 +108,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   TextFormField(
                     controller: TextEditingController(text: user.email),
                     onChanged: (value) {
-                      user.username = value;
+                      user.email = value;
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {

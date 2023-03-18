@@ -2,7 +2,7 @@ class User {
   String username;
   String email;
   String password;
-  int role;
+  int? role;
 
-  User(this.email, this.username, this.password, this.role);
+  User(this.email, this.username, this.password, [this.role]);
 }

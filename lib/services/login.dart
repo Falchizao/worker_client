@@ -26,7 +26,14 @@ class _LoginPageState extends State<LoginPage> {
   final jwtService = JwtService();
   final _formKey = GlobalKey<FormState>();
   User user = User('', '', '');
+
   Future loginUser() async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(child: CircularProgressIndicator());
+        });
+
     var url = '$BASE_URL/$LOGIN';
     var response = await http.post(Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
@@ -35,9 +42,11 @@ class _LoginPageState extends State<LoginPage> {
           'password': user.password,
         }));
 
+    Navigator.of(context).pop();
+
     if (response.statusCode == 200) {
       JwtService().setToken(response.body);
-      Get.to(() => FeedPage());
+      Get.to(() => RootPage());
     } else {
       handleToast(response.body);
     }

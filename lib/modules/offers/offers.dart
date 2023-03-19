@@ -30,7 +30,6 @@ class _OffersPageState extends State<OffersPage> {
     });
 
     if (response.statusCode == 200) {
-      String s = response.body;
       try {
         offers = jsonDecode(response.body);
       } on Exception catch (_) {

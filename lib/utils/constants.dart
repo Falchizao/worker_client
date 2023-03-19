@@ -3,5 +3,6 @@ import 'package:flutter/material.dart';
 
 const String LOGIN = 'authorization/login';
 const String REGISTER = 'authorization/register';
+const String OFFER = 'offers';
 
 const Color MAINBTNCOLOR = Colors.black;

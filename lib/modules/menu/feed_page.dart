@@ -2,6 +2,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../services/jwtservice.dart';
 import '../../services/register_offer.dart';
 import '../../utils/constants.dart';
 import '../chat/chat.dart';
@@ -39,6 +40,12 @@ class _RootPageState extends State<RootPage> {
       return true;
     }
     return false;
+  }
+
+  @override
+  void dispose() {
+    JwtService().removeToken();
+    super.dispose();
   }
 
   @override

@@ -19,36 +19,37 @@ class OffersPage extends StatefulWidget {
 
 class _OffersPageState extends State<OffersPage> {
   List<dynamic> offers = [];
+  List<String> subMenus = ["Offers", "Social", "Starred"];
 
-  // Future _getOffers() async {
-  //   var url = '$BASE_URL/$OFFER';
-  //   var token = await JwtService().getToken();
+  Future _getOffers() async {
+    var url = '$BASE_URL/$OFFER';
+    var token = await JwtService().getToken();
 
-  //   var response = await http.get(Uri.parse(url), headers: {
-  //     'Content-Type': 'application/json',
-  //     'Authorization': 'Bearer $token'
-  //   });
+    var response = await http.get(Uri.parse(url), headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    });
 
-  //   if (response.statusCode == 200) {
-  //     try {
-  //       offers = jsonDecode(response.body);
-  //     } on Exception catch (_) {
-  //       handleToast('Error casting offers');
-  //     }
-  //   } else {
-  //     handleToast('Error fetching offers');
-  //   }
-  // }
+    if (response.statusCode == 200) {
+      try {
+        offers = jsonDecode(response.body);
+      } on Exception catch (_) {
+        handleToast('Error casting offers');
+      }
+    } else {
+      handleToast('Error fetching offers');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    //_getOffers();
+    _getOffers();
   }
 
   @override
   Widget build(BuildContext context) {
-    //int selectedIndex = 0;
+    int selectedIndex = 0;
     Size size = MediaQuery.of(context).size;
 
     return MaterialApp(
@@ -69,18 +70,14 @@ class _OffersPageState extends State<OffersPage> {
                       ),
                       width: size.width * .9,
                       decoration: BoxDecoration(
-                        color:
-                            Color.fromARGB(255, 134, 125, 125).withOpacity(.3),
+                        color: const Color.fromARGB(255, 134, 125, 125)
+                            .withOpacity(.3),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            Icons.search,
-                            color: Colors.black54.withOpacity(.6),
-                          ),
                           const Expanded(
                               child: TextField(
                             showCursor: false,
@@ -91,7 +88,7 @@ class _OffersPageState extends State<OffersPage> {
                             ),
                           )),
                           Icon(
-                            Icons.mic,
+                            Icons.search,
                             color: Colors.black54.withOpacity(.6),
                           ),
                         ],
@@ -99,7 +96,217 @@ class _OffersPageState extends State<OffersPage> {
                     )
                   ],
                 ),
-              )
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                height: 50.0,
+                width: size.width,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: subMenus.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedIndex = index;
+                          });
+                        },
+                        child: Text(
+                          subMenus[index],
+                          style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: selectedIndex == index
+                                  ? FontWeight.bold
+                                  : FontWeight.w300,
+                              color: selectedIndex == index
+                                  ? const Color.fromARGB(255, 100, 154, 204)
+                                  : const Color.fromARGB(255, 145, 146, 147)),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(left: 15, bottom: 20, top: 20),
+                child: const Text(
+                  "Recommended",
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                ),
+              ),
+              SizedBox(
+                  height: size.height * .3,
+                  child: FutureBuilder(
+                    future: _getOffers(),
+                    builder: (context, snapshot) {
+                      return ListView.builder(
+                        itemCount: offers.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            width: 200,
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.black54.withOpacity(.8),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                  top: 10,
+                                  right: 10,
+                                  child: Container(
+                                    height: 30,
+                                    width: 30,
+                                    child: const IconButton(
+                                      onPressed: null,
+                                      icon: Icon(Icons.favorite),
+                                      color: Colors.yellow,
+                                      iconSize: 15,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  left: 50,
+                                  right: 50,
+                                  top: 50,
+                                  bottom: 50,
+                                  child: Image.asset("images/baam.png"),
+                                ),
+                                Positioned(
+                                  bottom: 15,
+                                  left: 20,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        offers[index]["title"],
+                                        style: const TextStyle(
+                                            color: Colors.blue,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: 15,
+                                  right: 20,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 2),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Text(
+                                      r'$' + offers[index]["salary"].toString(),
+                                      style: const TextStyle(
+                                          color: Colors.green, fontSize: 16),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  )),
+              Container(
+                padding: const EdgeInsets.only(left: 15, bottom: 20, top: 20),
+                child: const Text(
+                  "All offers",
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  height: size.height * .5,
+                  child: FutureBuilder(
+                      future: _getOffers(),
+                      builder: (context, snapshot) {
+                        return ListView.builder(
+                          itemCount: offers.length,
+                          scrollDirection: Axis.vertical,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (BuildContext context, int index) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 0, 0, 0)
+                                    .withOpacity(.1),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              height: 80.0,
+                              padding: const EdgeInsets.only(left: 10, top: 10),
+                              margin:
+                                  const EdgeInsets.only(bottom: 10, top: 10),
+                              width: size.width,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Stack(
+                                    clipBehavior: Clip.none,
+                                    children: [
+                                      Container(
+                                        width: 60.0,
+                                        height: 60.0,
+                                        decoration: BoxDecoration(
+                                            color: Colors.blue.withOpacity(.8),
+                                            shape: BoxShape.circle),
+                                      ),
+                                      Positioned(
+                                        bottom: 5,
+                                        left: 0,
+                                        right: 0,
+                                        child: SizedBox(
+                                          height: 80.0,
+                                          child: Image.asset("images/baam.png"),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        bottom: 5,
+                                        left: 80,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              r'$' +
+                                                  offers[index]["salary"]
+                                                      .toString(),
+                                              style: TextStyle(
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.green),
+                                            ),
+                                            Text(
+                                              offers[index]["title"],
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15,
+                                                  color: Colors.black),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      }))
             ]))));
   }
 }

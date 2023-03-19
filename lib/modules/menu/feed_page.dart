@@ -33,7 +33,12 @@ class _RootPageState extends State<RootPage> {
     Icons.person,
   ];
 
-  List<String> titleList = ['Home', 'Search', 'Chat', 'Profile'];
+  List<String> titleList = [
+    'Offers and Social',
+    'Search',
+    'Messaging',
+    'Your Profile'
+  ];
 
   bool _shouldShowFloatingButton() {
     if (_currentPage < 2) {
@@ -63,11 +68,6 @@ class _RootPageState extends State<RootPage> {
                   fontSize: 24,
                 ),
               ),
-              const Icon(
-                Icons.notifications,
-                color: Colors.black,
-                size: 30,
-              )
             ],
           ),
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,

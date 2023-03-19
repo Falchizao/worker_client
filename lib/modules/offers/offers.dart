@@ -19,7 +19,7 @@ class OffersPage extends StatefulWidget {
 
 class _OffersPageState extends State<OffersPage> {
   List<dynamic> offers = [];
-  List<String> subMenus = ["Offers", "Social", "Starred"];
+  List<String> subMenus = ["Offers", "Social"];
 
   Future _getOffers() async {
     var url = '$BASE_URL/$OFFER';

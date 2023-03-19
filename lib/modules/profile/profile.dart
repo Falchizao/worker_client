@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../services/portfolioGenerator.dart';
+import '../../widget/profile_config.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -11,131 +12,110 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late File _backgroundImage;
-  late File _profileImage;
-  late TextEditingController _skillController = TextEditingController();
-  late TextEditingController _descriptionController = TextEditingController();
-  final picker = ImagePicker();
+  // late File _backgroundImage;
+  // late File _profileImage;
+  // late TextEditingController _skillController = TextEditingController();
+  // late TextEditingController _descriptionController = TextEditingController();
+  // final picker = ImagePicker();
 
-  Future<void> _selectBackgroundImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    setState(() {
-      if (pickedFile != null) {
-        _backgroundImage = File(pickedFile.path);
-      }
-    });
-  }
+  // Future<void> _selectBackgroundImage() async {
+  //   final pickedFile = await picker.getImage(source: ImageSource.gallery);
+  //   setState(() {
+  //     if (pickedFile != null) {
+  //       //_backgroundImage = File(pickedFile.path);
+  //     }
+  //   });
+  // }
 
   @override
   void initState() {
     super.initState();
-    _skillController = TextEditingController();
-    _descriptionController = TextEditingController();
-    _backgroundImage = File('images/baam.png');
-    _profileImage = File('images/baam.png');
+    // _skillController = TextEditingController();
+    // _descriptionController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _skillController.dispose();
-    _descriptionController.dispose();
+    // _skillController.dispose();
+    // _descriptionController.dispose();
     super.dispose();
   }
 
-  Future<void> _selectProfileImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    setState(() {
-      if (pickedFile != null) {
-        _profileImage = File(pickedFile.path);
-      }
-    });
-  }
+  // Future<void> _selectProfileImage() async {
+  //   final pickedFile = await picker.getImage(source: ImageSource.gallery);
+  //   setState(() {
+  //     if (pickedFile != null) {
+  //       // _profileImage = File(pickedFile.path);
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: SingleChildScrollView(
+        body: SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        height: size.height,
+        width: size.width,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 16),
-            GestureDetector(
-              onTap: _selectBackgroundImage,
-              child: _backgroundImage == null
-                  ? Container(
-                      color: Colors.grey[300],
-                      height: 200,
-                      child: const Center(
-                        child: Text('Select the background image'),
-                      ),
-                    )
-                  : Image.file(
-                      _backgroundImage,
-                      height: 200,
-                      fit: BoxFit.cover,
-                    ),
+            Container(
+              width: 150,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: Color.fromARGB(221, 0, 0, 0), width: 3.0)),
+              child: CircleAvatar(
+                  radius: 60,
+                  backgroundColor: Colors.transparent,
+                  backgroundImage: ExactAssetImage("images/baam.png")),
             ),
-            const SizedBox(height: 10),
-            GestureDetector(
-              onTap: _selectProfileImage,
-              child: _profileImage == null
-                  ? const CircleAvatar(
-                      radius: 50,
-                      child: Icon(Icons.person),
-                    )
-                  : CircleAvatar(
-                      radius: 50,
-                      backgroundImage: FileImage(_profileImage),
-                    ),
+            const SizedBox(
+              height: 15,
             ),
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+            Text(
+              'Falchizao',
+              style: TextStyle(color: Colors.black, fontSize: 20),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text('marcelonavarro11md@gmail.com',
+                style: TextStyle(color: Colors.black.withOpacity(.4))),
+            const SizedBox(
+              height: 25,
+            ),
+            SizedBox(
+              height: size.height * .7,
+              width: size.width,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Skills',
-                    style: TextStyle(fontSize: 18),
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  ConfgProfileWidget(
+                    icon: Icons.person,
+                    title: 'Profile',
                   ),
-                  const SizedBox(height: 8),
-                  TextFormField(
-                    controller: _skillController,
-                    decoration: const InputDecoration(
-                      hintText: 'Enter your skills',
-                    ),
+                  ConfgProfileWidget(
+                    icon: Icons.settings,
+                    title: 'Settings',
                   ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Description',
-                    style: TextStyle(fontSize: 18),
+                  ConfgProfileWidget(
+                    icon: Icons.share,
+                    title: 'Share',
                   ),
-                  const SizedBox(height: 8),
-                  TextFormField(
-                    controller: _descriptionController,
-                    maxLines: 5,
-                    decoration: const InputDecoration(
-                      hintText: 'Enter a description',
-                    ),
+                  ConfgProfileWidget(
+                    icon: Icons.logout,
+                    title: 'Log out',
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: 16),
-            TextButton(
-              onPressed: () {},
-              child: const Text('Save'),
-            ),
-            TextButton(
-              onPressed: () async {
-                final pdf = await generatePdf();
-                final file = File('portfolio.pdf');
-                await file.writeAsBytes(await pdf.save());
-              },
-              child: const Text('Generate Portfolio!'),
-            ),
+            )
           ],
         ),
       ),
-    );
+    ));
   }
 }

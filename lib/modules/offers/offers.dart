@@ -20,108 +20,86 @@ class OffersPage extends StatefulWidget {
 class _OffersPageState extends State<OffersPage> {
   List<dynamic> offers = [];
 
-  Future _getOffers() async {
-    var url = '$BASE_URL/$OFFER';
-    var token = await JwtService().getToken();
+  // Future _getOffers() async {
+  //   var url = '$BASE_URL/$OFFER';
+  //   var token = await JwtService().getToken();
 
-    var response = await http.get(Uri.parse(url), headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer $token'
-    });
+  //   var response = await http.get(Uri.parse(url), headers: {
+  //     'Content-Type': 'application/json',
+  //     'Authorization': 'Bearer $token'
+  //   });
 
-    if (response.statusCode == 200) {
-      try {
-        offers = jsonDecode(response.body);
-      } on Exception catch (_) {
-        handleToast('Error casting offers');
-      }
-    } else {
-      handleToast('Error fetching offers');
-    }
-  }
+  //   if (response.statusCode == 200) {
+  //     try {
+  //       offers = jsonDecode(response.body);
+  //     } on Exception catch (_) {
+  //       handleToast('Error casting offers');
+  //     }
+  //   } else {
+  //     handleToast('Error fetching offers');
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
-    _getOffers();
+    //_getOffers();
   }
 
   @override
   Widget build(BuildContext context) {
-    int selectedIndex = 0;
+    //int selectedIndex = 0;
     Size size = MediaQuery.of(context).size;
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-            backgroundColor: const Color.fromARGB(255, 162, 194, 216),
-            body: FutureBuilder(
-                future: _getOffers(),
-                builder: (context, snapshot) {
-                  return ListView.builder(
-                    itemCount: offers
-                        .length, // Replace with the actual number of posts
-                    itemBuilder: (BuildContext context, int index) {
-                      return Card(
-                        child: Column(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(5),
-                                  child: Text(
-                                    offers[index]["title"],
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8),
-                                  child: Text(
-                                    offers[index]["content"],
-                                    style: const TextStyle(
-                                        fontSize: 16, color: Colors.blueGrey),
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.info),
-                                      onPressed: () {
-                                        // Add your like action here
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.star),
-                                      onPressed: () {
-                                        // Add your like action here
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.add),
-                                      onPressed: () {
-                                        // Add your comment action here
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.share),
-                                      onPressed: () {
-                                        shareViaWhatsApp('teste');
-                                        // Add your share action here
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ],
+            body: SingleChildScrollView(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+              Container(
+                padding: const EdgeInsets.only(top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                      ),
+                      width: size.width * .9,
+                      decoration: BoxDecoration(
+                        color:
+                            Color.fromARGB(255, 134, 125, 125).withOpacity(.3),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.search,
+                            color: Colors.black54.withOpacity(.6),
+                          ),
+                          const Expanded(
+                              child: TextField(
+                            showCursor: false,
+                            decoration: InputDecoration(
+                              hintText: 'Search Offer',
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
                             ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                })));
+                          )),
+                          Icon(
+                            Icons.mic,
+                            color: Colors.black54.withOpacity(.6),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ]))));
   }
 }

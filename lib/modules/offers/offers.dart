@@ -18,7 +18,7 @@ class OffersPage extends StatefulWidget {
 }
 
 class _OffersPageState extends State<OffersPage> {
-  List<dynamic> offers = [];
+  List<Offer> offers = [];
   List<String> subMenus = ["Offers", "Social"];
 
   Future _getOffers() async {
@@ -32,7 +32,18 @@ class _OffersPageState extends State<OffersPage> {
 
     if (response.statusCode == 200) {
       try {
-        offers = jsonDecode(response.body);
+        var jsonData = jsonDecode(response.body);
+
+        for (var eachOffer in jsonData) {
+          final offer = Offer(
+            salary: eachOffer['salary'].toString(),
+            createdDate: eachOffer['createdDate'].toString(),
+            content: eachOffer['content'],
+            employer: eachOffer['employer'],
+            title: eachOffer['title'],
+          );
+          offers.add(offer);
+        }
       } on Exception catch (_) {
         handleToast('Error casting offers');
       }
@@ -177,7 +188,7 @@ class _OffersPageState extends State<OffersPage> {
                                   right: 50,
                                   top: 50,
                                   bottom: 50,
-                                  child: Image.asset("images/baam.png"),
+                                  child: Image.asset("images/defaultpic.png"),
                                 ),
                                 Positioned(
                                   bottom: 15,
@@ -187,7 +198,7 @@ class _OffersPageState extends State<OffersPage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        offers[index]["title"],
+                                        offers[index].title,
                                         style: const TextStyle(
                                             color: Colors.blue,
                                             fontSize: 15,
@@ -207,7 +218,7 @@ class _OffersPageState extends State<OffersPage> {
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: Text(
-                                      r'$' + offers[index]["salary"].toString(),
+                                      r'$' + offers[index].salary.toString(),
                                       style: const TextStyle(
                                           color: Colors.green, fontSize: 16),
                                     ),
@@ -240,14 +251,13 @@ class _OffersPageState extends State<OffersPage> {
                           itemBuilder: (BuildContext context, int index) {
                             return Container(
                               decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 0, 0, 0)
+                                color: Color.fromARGB(255, 168, 206, 241)
                                     .withOpacity(.1),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               height: 80.0,
-                              padding: const EdgeInsets.only(left: 10, top: 10),
-                              margin:
-                                  const EdgeInsets.only(bottom: 10, top: 10),
+                              padding: const EdgeInsets.only(left: 10, top: 5),
+                              margin: const EdgeInsets.only(bottom: 10, top: 5),
                               width: size.width,
                               child: Row(
                                 mainAxisAlignment:
@@ -258,19 +268,22 @@ class _OffersPageState extends State<OffersPage> {
                                     clipBehavior: Clip.none,
                                     children: [
                                       Container(
-                                        width: 60.0,
-                                        height: 60.0,
+                                        width: 50.0,
+                                        height: 70.0,
                                         decoration: BoxDecoration(
-                                            color: Colors.blue.withOpacity(.8),
+                                            color: Color.fromARGB(
+                                                    255, 247, 247, 247)
+                                                .withOpacity(.8),
                                             shape: BoxShape.circle),
                                       ),
                                       Positioned(
-                                        bottom: 5,
+                                        top: 0,
                                         left: 0,
                                         right: 0,
                                         child: SizedBox(
                                           height: 80.0,
-                                          child: Image.asset("images/baam.png"),
+                                          child: Image.asset(
+                                              "images/defaultpic.png"),
                                         ),
                                       ),
                                       Positioned(
@@ -282,7 +295,8 @@ class _OffersPageState extends State<OffersPage> {
                                           children: [
                                             Text(
                                               r'$' +
-                                                  offers[index]["salary"]
+                                                  offers[index]
+                                                      .salary
                                                       .toString(),
                                               style: TextStyle(
                                                   fontSize: 13,
@@ -290,7 +304,7 @@ class _OffersPageState extends State<OffersPage> {
                                                   color: Colors.green),
                                             ),
                                             Text(
-                                              offers[index]["title"],
+                                              offers[index].title,
                                               style: const TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 15,

@@ -27,6 +27,11 @@ class _RegisterPageState extends State<RegisterPage> {
   User user = User('', '', '', 0);
 
   Future registerUser() async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(child: CircularProgressIndicator());
+        });
     user.role = role;
     var response = await http.post(Uri.parse('$BASE_URL/$REGISTER'),
         headers: {'Content-Type': 'application/json'},
@@ -36,6 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
           "email": user.email
         }));
 
+    Navigator.of(context).pop();
     if (response.statusCode == 200) {
       handleToast(response.body);
       Get.offAll(LoginPage());

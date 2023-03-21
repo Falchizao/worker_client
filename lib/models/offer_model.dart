@@ -6,11 +6,13 @@ class Offer {
   final String content;
   final String employer;
   final String title;
+  final String hours;
 
   Offer(
       {required this.salary,
       required this.createdDate,
       required this.content,
       required this.employer,
-      required this.title});
+      required this.title,
+      required this.hours});
 }

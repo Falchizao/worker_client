@@ -93,7 +93,7 @@ class _RootPageState extends State<RootPage> {
           visible: _shouldShowFloatingButton(), // Set it to false
           child: FloatingActionButton(
             onPressed: () {
-              Get.to(() => const RegisterOffer());
+              Get.to(() => RegisterOffer());
             },
             backgroundColor: Colors.white,
             child: const Icon(

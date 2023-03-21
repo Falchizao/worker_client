@@ -33,7 +33,7 @@ class _OffersPageState extends State<OffersPage> {
     if (response.statusCode == 200) {
       try {
         var jsonData = jsonDecode(response.body);
-
+        offers.clear();
         for (var eachOffer in jsonData) {
           final offer = Offer(
             salary: eachOffer['salary'].toString(),
@@ -41,6 +41,7 @@ class _OffersPageState extends State<OffersPage> {
             content: eachOffer['content'],
             employer: eachOffer['employer'],
             title: eachOffer['title'],
+            hours: eachOffer['hours'].toString(),
           );
           offers.add(offer);
         }
@@ -54,8 +55,8 @@ class _OffersPageState extends State<OffersPage> {
 
   @override
   void initState() {
-    super.initState();
     _getOffers();
+    super.initState();
   }
 
   @override

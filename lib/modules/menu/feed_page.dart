@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../services/jwtservice.dart';
 import '../../services/register_offer.dart';
+import '../../services/register_post.dart';
 import '../../utils/constants.dart';
 import '../chat/chat.dart';
 import '../offers/offers.dart';
@@ -93,7 +94,11 @@ class _RootPageState extends State<RootPage> {
           visible: _shouldShowFloatingButton(), // Set it to false
           child: FloatingActionButton(
             onPressed: () {
-              Get.to(() => RegisterOffer());
+              if (_currentPage == 0) {
+                Get.to(() => RegisterOffer());
+              } else {
+                Get.to(() => RegisterPost());
+              }
             },
             backgroundColor: Colors.white,
             child: const Icon(

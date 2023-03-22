@@ -55,6 +55,9 @@ class _RegisterOfferState extends State<RegisterOffer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const BackButton(
+          color: Colors.black, // <-- SEE HERE
+        ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -68,7 +71,7 @@ class _RegisterOfferState extends State<RegisterOffer> {
             ),
           ],
         ),
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: Colors.white,
         elevation: 0.0,
       ),
       body: SingleChildScrollView(
@@ -77,7 +80,7 @@ class _RegisterOfferState extends State<RegisterOffer> {
           child: Form(
             key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 TextFormField(
                   controller: TextEditingController(text: _title),
@@ -85,6 +88,7 @@ class _RegisterOfferState extends State<RegisterOffer> {
                     _title = title;
                   },
                   decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
                     labelText: 'Offer title',
                   ),
                   validator: (title) {
@@ -99,12 +103,14 @@ class _RegisterOfferState extends State<RegisterOffer> {
                     }
                   },
                 ),
+                const SizedBox(height: 16.0),
                 TextFormField(
                   controller: TextEditingController(text: _content),
                   onChanged: (content) {
                     _content = content;
                   },
                   decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
                     labelText: 'Description',
                   ),
                   validator: (content) {
@@ -119,12 +125,14 @@ class _RegisterOfferState extends State<RegisterOffer> {
                     }
                   },
                 ),
+                const SizedBox(height: 16.0),
                 TextFormField(
                   controller: TextEditingController(text: _hours),
                   onChanged: (value) {
                     _hours = value;
                   },
                   decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
                     labelText: 'Hours per week',
                   ),
                   validator: (hours) {
@@ -145,6 +153,7 @@ class _RegisterOfferState extends State<RegisterOffer> {
                     }
                   },
                 ),
+                const SizedBox(height: 16.0),
                 TextFormField(
                   controller: TextEditingController(text: _salary),
                   onChanged: (salary) {
@@ -152,6 +161,7 @@ class _RegisterOfferState extends State<RegisterOffer> {
                   },
                   decoration: const InputDecoration(
                     labelText: 'Salary',
+                    border: OutlineInputBorder(),
                   ),
                   validator: (salary) {
                     if (salary != null && salary.isEmpty) {

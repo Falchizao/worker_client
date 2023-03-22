@@ -1,5 +1,12 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import "package:http/http.dart" as http;
+import '../utils/constants.dart';
+import '../utils/handler.dart';
+import '../utils/requests.dart';
+import 'jwtservice.dart';
 
 class RegisterPost extends StatefulWidget {
   const RegisterPost({Key? key}) : super(key: key);
@@ -16,7 +23,33 @@ class _RegisterPostState extends State<RegisterPost> {
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      // Perform actions with title and content values here
+    }
+  }
+
+  Future _addPost() async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(child: CircularProgressIndicator());
+        });
+
+    var token = await JwtService().getToken();
+    var response = await http.post(Uri.parse('$BASE_URL/$POST/submit'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+        body: json.encode({
+          "content": _content,
+          "title": _title,
+        }));
+
+    Navigator.of(context).pop();
+    if (response.statusCode == 201) {
+      handleToast("Post submitted with success!");
+      Get.back();
+    } else {
+      handleToast("Erro while trying to add new post!");
     }
   }
 
@@ -25,7 +58,7 @@ class _RegisterPostState extends State<RegisterPost> {
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(
-          color: Colors.black, // <-- SEE HERE
+          color: Colors.black,
         ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -80,7 +113,7 @@ class _RegisterPostState extends State<RegisterPost> {
               ),
               const SizedBox(height: 16.0),
               ElevatedButton(
-                onPressed: _submitForm,
+                onPressed: _addPost,
                 child: const Text('Add Post'),
               ),
             ],

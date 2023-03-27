@@ -51,6 +51,7 @@ class _RootPageState extends State<RootPage> {
   @override
   void dispose() {
     JwtService().removeToken();
+    JwtService().removeRole();
     super.dispose();
   }
 
@@ -93,9 +94,14 @@ class _RootPageState extends State<RootPage> {
         floatingActionButton: Visibility(
           visible: _shouldShowFloatingButton(), // Set it to false
           child: FloatingActionButton(
-            onPressed: () {
+            onPressed: () async {
               if (_currentPage == 0) {
-                Get.to(() => RegisterOffer());
+                String? role = await JwtService().getRole();
+                if (role.toString() == "COMPANY") {
+                  Get.to(() => RegisterOffer());
+                } else {
+                  Get.to(() => RegisterPost());
+                }
               } else {
                 Get.to(() => RegisterPost());
               }

@@ -41,7 +41,7 @@ dependencies:
   faker: ^2.1.0
   get:
   shared_preferences: ^2.1.0
-  pdf: ^3.10.0
+  pdf: ^3.10.1
   flutter_secure_storage: ^8.0.0
   image_picker: ^0.8.7
   flutter:

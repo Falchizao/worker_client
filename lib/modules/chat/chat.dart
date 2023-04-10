@@ -1,59 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'chat_message.dart';
+import 'chat_provider.dart';
 
-class ChatPage extends StatefulWidget {
-  ChatPage({super.key});
-
-  @override
-  _ChatPageState createState() => _ChatPageState();
-}
-
-class _ChatPageState extends State<ChatPage> {
+class ChatScreen extends StatelessWidget {
   final TextEditingController _textController = TextEditingController();
-  List<String> _messages = [];
-
-  void _sendMessage(String message) {
-    setState(() {
-      _messages.add(message);
-      _textController.clear();
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Chat with recruiters!',
+          style: GoogleFonts.pacifico(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       body: Column(
         children: [
-          Expanded(
-            child: ListView.builder(
-              reverse: true,
-              itemCount: _messages.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Text(_messages[index]),
-                );
-              },
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _textController,
-                    decoration:
-                        const InputDecoration(hintText: 'Type your message...'),
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: () => _sendMessage(_textController.text),
-                ),
-              ],
-            ),
-          ),
+          // Expanded(
+          //   child: Consumer<ChatProvider>(
+          //     builder: (context, chatProvider, _) {
+          //       return ListView.builder(
+          //         itemCount: chatProvider.messages.length,
+          //         itemBuilder: (context, index) {
+          //           ChatMessage message = chatProvider.messages[index];
+          //           return ListTile(
+          //             title: Text(message.sender),
+          //             subtitle: Text(message.content),
+          //             trailing: Text(message.timestamp.toIso8601String()),
+          //           );
+          //         },
+          //       );
+          //     },
+          //   ),
+          // ),
+          // Container(
+          //   padding: EdgeInsets.symmetric(horizontal: 8.0),
+          //   child: Row(
+          //     children: [
+          //       Expanded(
+          //         child: TextField(
+          //           controller: _textController,
+          //           decoration: InputDecoration(
+          //             hintText: 'Type a message...',
+          //           ),
+          //         ),
+          //       ),
+          //       IconButton(
+          //         icon: Icon(Icons.send),
+          //         onPressed: () {
+          //           context
+          //               .read<ChatProvider>()
+          //               .sendMessage(_textController.text);
+          //           _textController.clear();
+          //         },
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );

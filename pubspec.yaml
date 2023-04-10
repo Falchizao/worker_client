@@ -32,7 +32,7 @@ dependencies:
   page_transition: ^2.0.9
   animated_bottom_navigation_bar: ^1.2.0
   flutter_svg: ^2.0.4 
-  flutter_staggered_grid_view: ^0.4.0
+  flutter_staggered_grid_view: ^0.6.2
   flutter_launcher_icons: ^0.12.0
   google_fonts: ^4.0.3
   http: ^0.13.5
@@ -42,8 +42,8 @@ dependencies:
   fluttertoast: ^8.0.8
   faker: ^2.1.0
   get:
-  shared_preferences: ^2.0.18
-  pdf: ^3.9.0
+  shared_preferences: ^2.1.0
+  pdf: ^3.10.0
   flutter_secure_storage: ^8.0.0
   image_picker: ^0.8.7
   flutter:

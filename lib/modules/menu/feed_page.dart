@@ -23,7 +23,7 @@ class _RootPageState extends State<RootPage> {
   List<Widget> pages = [
     OffersPage(),
     SearchPage(),
-    ChatPage(),
+    ChatScreen(),
     ProfilePage(),
   ];
 
@@ -32,13 +32,6 @@ class _RootPageState extends State<RootPage> {
     Icons.search,
     Icons.chat,
     Icons.person,
-  ];
-
-  List<String> titleList = [
-    'Offers and Social',
-    'Search',
-    'Messaging',
-    'Your Profile'
   ];
 
   bool _shouldShowFloatingButton() {
@@ -58,23 +51,6 @@ class _RootPageState extends State<RootPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                titleList[_currentPage],
-                style: GoogleFonts.pacifico(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                ),
-              ),
-            ],
-          ),
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          elevation: 0.0,
-        ),
         body: IndexedStack(index: _currentPage, children: pages),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: AnimatedBottomNavigationBar(

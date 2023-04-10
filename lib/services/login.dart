@@ -47,7 +47,8 @@ class _LoginPageState extends State<LoginPage> {
     if (response.statusCode == 200) {
       dynamic unserializable = jsonDecode(response.body);
       JwtService().setToken(unserializable["token"]);
-      JwtService().setRole(unserializable["user_role"]);
+      JwtService().setRole("COMPANY");
+      // JwtService().setRole(unserializable["user_role"]);
       Get.to(() => RootPage());
     } else {
       handleToast(response.body);
@@ -98,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your username';
+                        return 'Please enter your username'.tr;
                       }
                       return null;
                     },
@@ -125,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                       user.password = value;
                     },
                     decoration: InputDecoration(
-                      hintText: 'Enter your password',
+                      hintText: 'Enter your password'.tr,
                       hintStyle: GoogleFonts.roboto(
                         color: Colors.white70,
                       ),
@@ -140,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
+                        return 'Please enter your password'.tr;
                       }
                       return null;
                     },
@@ -177,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
-                      handleToast("Sign in with google");
+                      handleToast("Sign in with google".tr);
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.lightBlue[900],
@@ -207,9 +208,9 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () {
                       Get.to(() => const LetsGetStartedPage());
                     },
-                    child: const Text(
-                      'Don´t have an account yet?  Sign Up',
-                      style: TextStyle(
+                    child: Text(
+                      'Don´t have an account yet?  Sign Up'.tr,
+                      style: const TextStyle(
                         color: Colors.white,
                       ),
                     ),

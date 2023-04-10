@@ -1,10 +1,16 @@
+import 'dart:convert';
 import 'dart:io';
-import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
 
-import '../../services/portfolioGenerator.dart';
-import '../../widget/profile_config.dart';
+import '../../services/jwtservice.dart';
+import '../../utils/handler.dart';
+import '../../utils/requests.dart';
+import '../../widget/details_tile.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -12,110 +18,259 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  // late File _backgroundImage;
-  // late File _profileImage;
-  // late TextEditingController _skillController = TextEditingController();
-  // late TextEditingController _descriptionController = TextEditingController();
-  // final picker = ImagePicker();
+  TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _localizationController = TextEditingController();
+  final TextEditingController _stateController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
 
-  // Future<void> _selectBackgroundImage() async {
-  //   final pickedFile = await picker.getImage(source: ImageSource.gallery);
-  //   setState(() {
-  //     if (pickedFile != null) {
-  //       //_backgroundImage = File(pickedFile.path);
-  //     }
-  //   });
-  // }
+  bool _isDarkTheme = false;
+  late File? _profilePicture;
+  bool isLoading = true;
+  ThemeMode _themeMode = ThemeMode.system;
+
+  final _formKey = GlobalKey<FormState>();
+  bool _isSubmitting = false;
+  String _phoneNumber = '';
+  String username = "";
+  String email = "";
+  String description = "";
+  String role = "";
+  late final Future myFuture;
 
   @override
   void initState() {
     super.initState();
-    // _skillController = TextEditingController();
-    // _descriptionController = TextEditingController();
+    myFuture = _fetchUserDetails();
+    Future.delayed(Duration(seconds: 3), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
+    getPhoneNumber();
   }
 
-  @override
-  void dispose() {
-    // _skillController.dispose();
-    // _descriptionController.dispose();
-    super.dispose();
+  void getPhoneNumber() async {
+    // String phoneNumber =
+    // await ImeiPlugin.getImei(shouldShowRequestPermissionRationale: false);
+    setState(() {
+      // _phoneNumber = phoneNumber ?? '';
+    });
   }
 
-  // Future<void> _selectProfileImage() async {
-  //   final pickedFile = await picker.getImage(source: ImageSource.gallery);
-  //   setState(() {
-  //     if (pickedFile != null) {
-  //       // _profileImage = File(pickedFile.path);
-  //     }
-  //   });
-  // }
+  Future<void> _pickImage() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      final directory = await getApplicationDocumentsDirectory();
+      final imagePath =
+          '${directory.path}/${DateTime.now().toIso8601String()}.jpg';
+      final imageFile = await File(pickedImage.path).copy(imagePath);
+      setState(() {
+        _profilePicture = imageFile;
+      });
+    }
+  }
+
+  void _toggleTheme() {
+    setState(() {
+      _isDarkTheme = !_isDarkTheme;
+      ThemeMode newTheme = _isDarkTheme ? ThemeMode.dark : ThemeMode.light;
+      (context.findAncestorWidgetOfExactType<ProfilePage>()
+              as _ProfilePageState)
+          .changeTheme(newTheme);
+    });
+  }
+
+  void changeTheme(ThemeMode newTheme) {
+    setState(() {
+      _themeMode = newTheme;
+    });
+  }
+
+  Future<void> _submitData() async {
+    setState(() {
+      _isSubmitting = true;
+    });
+
+    var token = await JwtService().getToken();
+    var url = '$BASE_URL/user/update';
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+        body: json.encode({
+          'firstName': username,
+          'lastName': username,
+          'location': email,
+          'description': description,
+        }));
+
+    setState(() {
+      _isSubmitting = false;
+    });
+
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Data submitted successfully!')),
+      );
+      showDialog(
+          context: context,
+          builder: (context) {
+            return const Center(child: CircularProgressIndicator());
+          });
+      await _fetchUserDetails();
+      Navigator.of(context).pop();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Error submitting data. Please try again later.')),
+      );
+    }
+  }
+
+  Future _fetchUserDetails() async {
+    var token = await JwtService().getToken();
+    var url = '$BASE_URL/user/owninfo';
+    final response = await http.post(Uri.parse(url), headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    });
+
+    if (response.statusCode == 200) {
+      final userDetails = jsonDecode(response.body);
+      setState(() {
+        username = userDetails["username"];
+        email = userDetails["email"];
+        role = userDetails["role"];
+        _descriptionController.text = userDetails["description"] ?? "";
+      });
+    } else {
+      handleToast("Error fetching user data");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
-        body: SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        height: size.height,
-        width: size.width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              width: 150,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                      color: Color.fromARGB(221, 0, 0, 0), width: 3.0)),
-              child: CircleAvatar(
-                  radius: 60,
-                  backgroundColor: Colors.transparent,
-                  backgroundImage: ExactAssetImage("images/defaultpic.png")),
+        appBar: AppBar(
+          title: Text(
+            'Profile Page',
+            style: GoogleFonts.pacifico(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
             ),
-            const SizedBox(
-              height: 15,
-            ),
-            Text(
-              'Falchizao',
-              style: TextStyle(color: Colors.black, fontSize: 20),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text('marcelonavarro11md@gmail.com',
-                style: TextStyle(color: Colors.black.withOpacity(.4))),
-            const SizedBox(
-              height: 25,
-            ),
-            SizedBox(
-              height: size.height * .7,
-              width: size.width,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
-                  ConfgProfileWidget(
-                    icon: Icons.person,
-                    title: 'Profile',
-                  ),
-                  ConfgProfileWidget(
-                    icon: Icons.settings,
-                    title: 'Settings',
-                  ),
-                  ConfgProfileWidget(
-                    icon: Icons.share,
-                    title: 'Share',
-                  ),
-                  ConfgProfileWidget(
-                    icon: Icons.logout,
-                    title: 'Log out',
-                  ),
-                ],
-              ),
-            )
-          ],
+          ),
         ),
-      ),
-    ));
+        body: isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : FutureBuilder(
+                future: myFuture,
+                builder: (context, snapshot) {
+                  return SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Column(children: [
+                        Container(
+                          width: Get.width,
+                          height: Get.height,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.deepPurple,
+                                Colors.deepPurple.shade200
+                              ],
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  height: 100,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color:
+                                              const Color.fromARGB(221, 0, 0, 0)
+                                                  .withOpacity(0.3),
+                                          width: 2.0)),
+                                  child: GestureDetector(
+                                    onTap: _pickImage,
+                                    child: CircleAvatar(
+                                      radius: 50,
+                                      backgroundImage: NetworkImage(
+                                          'https://api.dicebear.com/6.x/initials/jpg?seed=$username'),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                DetailTile(
+                                    title: 'Email Registered', value: email),
+                                DetailTile(title: 'Name', value: username),
+                                DetailTile(title: 'Status', value: role),
+                                DetailTile(
+                                    title: 'Cellphone', value: _phoneNumber),
+                                const SizedBox(height: 5),
+                                Text('Description'.tr),
+                                TextFormField(
+                                  controller: _descriptionController,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  minLines: 1,
+                                  maxLines: 6,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter a description';
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    setState(() {
+                                      description = value;
+                                    });
+                                  },
+                                ),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed: () {},
+                                    child: _isSubmitting
+                                        ? const CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.white),
+                                          )
+                                        : const Text('Generate Portifolio'),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed:
+                                        _isSubmitting ? null : _submitData,
+                                    child: _isSubmitting
+                                        ? const CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.white),
+                                          )
+                                        : const Text('Submit'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ]));
+                },
+              ));
   }
 }

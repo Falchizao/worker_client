@@ -84,18 +84,21 @@ class _RegisterPostState extends State<RegisterPost> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Title',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a title';
-                  }
-                  return null;
-                },
-                onSaved: (value) => _title = value,
-              ),
+                  decoration: const InputDecoration(
+                    labelText: 'Title',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a title';
+                    }
+                    return null;
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                      _title = value;
+                    });
+                  }),
               const SizedBox(height: 16.0),
               TextFormField(
                 maxLines: null,
@@ -109,7 +112,7 @@ class _RegisterPostState extends State<RegisterPost> {
                   }
                   return null;
                 },
-                onSaved: (value) => _content = value,
+                onChanged: (value) => _content = value,
               ),
               const SizedBox(height: 16.0),
               ElevatedButton(

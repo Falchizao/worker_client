@@ -23,6 +23,10 @@ class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   final _confirmationController = TextEditingController();
 
+  String? _username;
+  String? _email;
+  String? _password;
+  String? _confirmPassword;
   int role;
   User user = User('', '', '', 0);
 
@@ -59,7 +63,7 @@ class _RegisterPageState extends State<RegisterPage> {
         backgroundColor: const Color.fromARGB(255, 13, 66, 105),
         appBar: AppBar(
           title: Text(
-            'Set up your credentials!',
+            'Set up your credentials!'.tr,
             style: GoogleFonts.pacifico(
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -83,21 +87,27 @@ class _RegisterPageState extends State<RegisterPage> {
                 children: <Widget>[
                   TextFormField(
                     controller: TextEditingController(text: user.username),
-                    onChanged: (value) {
-                      user.username = value;
-                    },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your username';
+                        return 'Please enter a username';
+                      } else if (value.length < 6 || value.length > 20) {
+                        return 'Username must be between 6 and 20 characters'
+                            .tr;
                       }
                       return null;
                     },
-                    decoration: const InputDecoration(
-                      hintText: 'Enter your username',
-                      hintStyle: TextStyle(
+                    onSaved: (value) {
+                      user.username = value!;
+                    },
+                    onChanged: (value) {
+                      user.username = value;
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'Enter your username'.tr,
+                      hintStyle: const TextStyle(
                         color: Colors.white70,
                       ),
-                      prefixIcon: Icon(
+                      prefixIcon: const Icon(
                         Icons.person,
                         color: Colors.white,
                       ),
@@ -111,16 +121,19 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   TextFormField(
                     controller: TextEditingController(text: user.email),
-                    onChanged: (value) {
-                      user.email = value;
-                    },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
-                      } else if (!isValidEmail(value)) {
-                        return 'Please enter a valid email address';
+                        return 'Please enter an email'.tr;
+                      } else if (!value.contains('@')) {
+                        return 'Please enter a valid email'.tr;
                       }
                       return null;
+                    },
+                    onSaved: (value) {
+                      user.email = value!;
+                    },
+                    onChanged: (value) {
+                      user.email = value;
                     },
                     decoration: const InputDecoration(
                       hintText: 'Enter your email',
@@ -141,9 +154,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   TextFormField(
                     controller: TextEditingController(text: user.password),
-                    onChanged: (value) {
-                      user.password = value;
-                    },
                     decoration: const InputDecoration(
                       hintText: 'Enter your password',
                       hintStyle: TextStyle(
@@ -154,15 +164,27 @@ class _RegisterPageState extends State<RegisterPage> {
                         color: Colors.white,
                       ),
                     ),
+                    onChanged: (value) {
+                      user.password = value;
+                    },
                     obscureText: true,
                     style: const TextStyle(
                       color: Colors.white,
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
+                        return 'Please enter a password'.tr;
+                      } else if (value.length < 8 || value.length > 20) {
+                        return 'Password must be between 8 and 20 characters'
+                            .tr;
+                      } else if (!value.contains(RegExp(r'[A-Z]'))) {
+                        return 'Password must contain at least one uppercase letter'
+                            .tr;
                       }
                       return null;
+                    },
+                    onSaved: (value) {
+                      user.password = value!;
                     },
                   ),
                   const SizedBox(
@@ -170,15 +192,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   TextFormField(
                     controller: _confirmationController,
-                    onChanged: (value) {
-                      user.password = value;
-                    },
-                    decoration: const InputDecoration(
-                      hintText: 'Confirm your password',
-                      hintStyle: TextStyle(
+                    decoration: InputDecoration(
+                      hintText: 'Confirm your password'.tr,
+                      hintStyle: const TextStyle(
                         color: Colors.white70,
                       ),
-                      prefixIcon: Icon(
+                      prefixIcon: const Icon(
                         Icons.lock,
                         color: Colors.white,
                       ),
@@ -189,12 +208,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please confirm your password';
-                      }
-                      if (value != user.password) {
-                        return 'Passwords do not match';
+                        return 'Please confirm your password'.tr;
+                      } else if (value != user.password) {
+                        return 'Passwords do not match'.tr;
                       }
                       return null;
+                    },
+                    onSaved: (value) {
+                      _confirmPassword = value;
                     },
                   ),
                   const SizedBox(
@@ -229,7 +250,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
-                      handleToast("Register with google");
+                      handleToast("Register with google".tr);
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.lightBlue[900],
@@ -245,7 +266,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       width: 30,
                     ),
                     label: Text(
-                      'Register with google',
+                      'Register with google'.tr,
                       style: TextStyle(
                         color: Colors.lightBlue[900],
                         fontSize: 16.0,

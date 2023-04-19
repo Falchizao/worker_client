@@ -26,9 +26,12 @@ class _TopJobsSectionState extends State<TopJobsSection> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text('Top Jobs'),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+            'Top Jobs',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
         SizedBox(height: 10),
         FutureBuilder<List<Offer>>(

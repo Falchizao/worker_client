@@ -8,21 +8,21 @@ class FilterModal extends StatefulWidget {
 }
 
 class _FilterModalState extends State<FilterModal> {
-  // Example filters
   bool _fullTime = false;
   bool _partTime = false;
+  bool _homeOffice = false;
   String? _location;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Job Type'),
+          const Text('Job Type'),
           CheckboxListTile(
-            title: Text('Full Time'),
+            title: const Text('Full Time'),
             value: _fullTime,
             onChanged: (bool? value) {
               setState(() {
@@ -31,7 +31,7 @@ class _FilterModalState extends State<FilterModal> {
             },
           ),
           CheckboxListTile(
-            title: Text('Part Time'),
+            title: const Text('Part Time'),
             value: _partTime,
             onChanged: (bool? value) {
               setState(() {
@@ -39,12 +39,21 @@ class _FilterModalState extends State<FilterModal> {
               });
             },
           ),
-          Divider(),
-          Text('Location'),
+          CheckboxListTile(
+            title: const Text('Home Office'),
+            value: _homeOffice,
+            onChanged: (bool? value) {
+              setState(() {
+                _homeOffice = value!;
+              });
+            },
+          ),
+          const Divider(),
+          const Text('Location'),
           DropdownButton<String>(
             value: _location,
-            hint: Text('Select location'),
-            items: ['New York', 'Los Angeles', 'Chicago']
+            hint: const Text('Select location'),
+            items: ['Brazil', 'United States', 'Spain', 'United Kingdom']
                 .map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
@@ -57,7 +66,7 @@ class _FilterModalState extends State<FilterModal> {
               });
             },
           ),
-          Divider(),
+          const Divider(),
           Center(
             child: ElevatedButton(
               onPressed: () {
@@ -73,7 +82,7 @@ class _FilterModalState extends State<FilterModal> {
                   ),
                 );
               },
-              child: Text('Apply Filters'),
+              child: const Text('Apply Filters'),
             ),
           ),
         ],

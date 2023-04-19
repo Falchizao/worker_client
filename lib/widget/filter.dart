@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-
+import '../modules/offers/filtered_offers_view.dart';
 import 'filter_modal.dart';
 
 class SearchAndFilter extends StatelessWidget {
+  final TextEditingController _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -12,9 +14,27 @@ class SearchAndFilter extends StatelessWidget {
         children: [
           Expanded(
             child: TextField(
+              controller: _searchController,
+              onChanged: (query) {}, // Remove the onChanged handler
               decoration: InputDecoration(
-                labelText: 'Search',
-                border: OutlineInputBorder(),
+                hintText: 'Search jobs...',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FilteredJobOffersPage(
+                          filterConfig: {}, // Replace with your filter configuration
+                          query: _searchController.text,
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           ),

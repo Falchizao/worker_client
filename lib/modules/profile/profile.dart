@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
-
 import '../../services/jwtservice.dart';
 import '../../utils/handler.dart';
 import '../../utils/requests.dart';
@@ -22,6 +21,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController _localizationController = TextEditingController();
   final TextEditingController _stateController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _xpController = TextEditingController();
 
   bool _isDarkTheme = false;
   late File? _profilePicture;
@@ -34,6 +34,8 @@ class _ProfilePageState extends State<ProfilePage> {
   String username = "";
   String email = "";
   String description = "";
+  String location = "";
+  String xp = "";
   String role = "";
   late final Future myFuture;
 
@@ -102,8 +104,9 @@ class _ProfilePageState extends State<ProfilePage> {
         body: json.encode({
           'firstName': username,
           'lastName': username,
-          'location': email,
+          'location': location,
           'description': description,
+          'previousXP': xp
         }));
 
     setState(() {
@@ -144,6 +147,8 @@ class _ProfilePageState extends State<ProfilePage> {
         email = userDetails["email"];
         role = userDetails["role"];
         _descriptionController.text = userDetails["description"] ?? "";
+        _xpController.text = userDetails["previousXp"] ?? "";
+        _localizationController.text = userDetails["location"] ?? "";
       });
     } else {
       handleToast("Error fetching user data");
@@ -175,13 +180,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         Container(
                           width: Get.width,
                           height: Get.height,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             gradient: LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: [
-                                Colors.deepPurple,
-                                Colors.deepPurple.shade200
+                                Color.fromARGB(255, 251, 249, 255),
+                                Color.fromARGB(255, 232, 219, 255)
                               ],
                             ),
                           ),
@@ -214,11 +219,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                 DetailTile(
                                     title: 'Email Registered', value: email),
                                 DetailTile(title: 'Name', value: username),
-                                DetailTile(title: 'Status', value: role),
-                                DetailTile(
-                                    title: 'Cellphone', value: _phoneNumber),
                                 const SizedBox(height: 5),
-                                Text('Description'.tr),
+                                Text(
+                                  'Description'.tr,
+                                  style: const TextStyle(color: Colors.black),
+                                ),
+                                const SizedBox(height: 1),
                                 TextFormField(
                                   controller: _descriptionController,
                                   decoration: const InputDecoration(
@@ -238,6 +244,56 @@ class _ProfilePageState extends State<ProfilePage> {
                                     });
                                   },
                                 ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Text('Location'.tr,
+                                    style:
+                                        const TextStyle(color: Colors.black)),
+                                TextFormField(
+                                  controller: _localizationController,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  minLines: 1,
+                                  maxLines: 6,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter a location';
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    setState(() {
+                                      location = value;
+                                    });
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Text('Previous experiences'.tr,
+                                    style:
+                                        const TextStyle(color: Colors.black)),
+                                TextFormField(
+                                  controller: _xpController,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  minLines: 1,
+                                  maxLines: 6,
+                                  validator: (value) {
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    setState(() {
+                                      xp = value;
+                                    });
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
                                 SizedBox(
                                   width: double.infinity,
                                   child: ElevatedButton(
@@ -246,7 +302,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         ? const CircularProgressIndicator(
                                             valueColor:
                                                 AlwaysStoppedAnimation<Color>(
-                                                    Colors.white),
+                                                    Colors.black),
                                           )
                                         : const Text('Generate Portifolio'),
                                   ),

@@ -15,9 +15,12 @@ class DetailTile extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       title: Text(
         title,
-        style: const TextStyle(fontWeight: FontWeight.bold),
+        style: const TextStyle(color: Colors.black),
       ),
-      subtitle: Text(value),
+      subtitle: Text(
+        value,
+        style: TextStyle(color: Colors.black),
+      ),
     );
   }
 }

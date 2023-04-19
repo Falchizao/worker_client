@@ -6,6 +6,7 @@ import 'offer_details.dart';
 class RecommendedJobCard extends StatelessWidget {
   final Offer offer;
   late String title = offer.title;
+  late double hours = offer.hours;
 
   RecommendedJobCard({required this.offer});
 
@@ -32,7 +33,7 @@ class RecommendedJobCard extends StatelessWidget {
             ),
           ],
         ),
-        width: 140,
+        width: 150,
         height: 200,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(16),
@@ -54,24 +55,24 @@ class RecommendedJobCard extends StatelessWidget {
                       offer.title,
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 13,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      offer.content,
+                      hours > 6 ? 'Type: FullTime' : 'Type: HalfTime',
                       style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                      ),
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      'Salary: ${offer.salary}',
+                      'Salary: \$${offer.salary}',
                       style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                      ),
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),

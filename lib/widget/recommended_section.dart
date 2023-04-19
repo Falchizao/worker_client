@@ -29,7 +29,10 @@ class _RecommendedSectionState extends State<RecommendedSection> {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text('Recommended'.tr),
+          child: Text(
+            'Recommended'.tr,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
         const SizedBox(height: 10),
         FutureBuilder<List<Offer>>(

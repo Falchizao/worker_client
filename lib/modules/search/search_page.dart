@@ -143,7 +143,7 @@ class _SearchPageState extends State<SearchPage> {
               decoration: InputDecoration(
                 hintText: 'Enter a username',
                 filled: true,
-                fillColor: Colors.grey[200],
+                fillColor: Colors.grey.withOpacity(.5),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: BorderSide.none,

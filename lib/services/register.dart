@@ -42,7 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
         body: json.encode({
           'username': user.username,
           'password': user.password,
-          "email": user.email
+          'email': user.email
         }));
 
     Navigator.of(context).pop();

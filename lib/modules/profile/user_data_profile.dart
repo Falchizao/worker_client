@@ -24,6 +24,8 @@ class _UserProfileVisualizerState extends State<UserProfileVisualizer> {
   String userrole = "";
   bool _isFollowing = false;
   String userDescription = "";
+  String userLocation = "";
+  String xp = "";
   late var token;
   bool isLoading = true;
   @override
@@ -48,27 +50,34 @@ class _UserProfileVisualizerState extends State<UserProfileVisualizer> {
 
     if (response.statusCode == 200) {
       final userDetails = jsonDecode(response.body);
-      userDescription = userDetails["profile"]["description"];
+      userDescription = userDetails["profile"]["description"] ?? "";
+      _isFollowing = userDetails["isfollowing"];
+      xp = userDetails["profile"]["previousXP"] ?? "";
+      userLocation = userDetails["profile"]["location"] ?? "";
     } else {
       handleToast("Error fetching user data");
     }
   }
 
   Future<void> _followUser() async {
-    // Replace the URL with your API endpoint
+    String action = !_isFollowing ? "true" : "false";
+    final body = {
+      'follow': action,
+    };
+
     final response = await http.post(
         Uri.parse('$BASE_URL/connections/follow?name=$username'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token'
-        });
+        },
+        body: jsonEncode(body));
 
     if (response.statusCode == 200) {
       setState(() {
         _isFollowing = !_isFollowing;
       });
     } else {
-      // Handle the error accordingly
       print('Failed to follow user.');
     }
   }
@@ -144,7 +153,34 @@ class _UserProfileVisualizerState extends State<UserProfileVisualizer> {
                                 const SizedBox(height: 10),
                                 Text(
                                   userDescription ?? "",
-                                  style: TextStyle(fontSize: 16),
+                                  style: const TextStyle(fontSize: 16),
+                                  textAlign: TextAlign.justify,
+                                ),
+                                const SizedBox(height: 20),
+                                const Text(
+                                  'Location',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  userLocation,
+                                  style: const TextStyle(fontSize: 16),
+                                  textAlign: TextAlign.justify,
+                                ),
+                                const SizedBox(height: 20),
+                                const SizedBox(height: 20),
+                                const Text(
+                                  'Experience',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  xp,
+                                  style: const TextStyle(fontSize: 16),
                                   textAlign: TextAlign.justify,
                                 ),
                                 const SizedBox(height: 20),

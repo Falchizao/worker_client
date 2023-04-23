@@ -89,7 +89,7 @@ class JobOfferDetails extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'location here',
+                offer.location,
                 style: const TextStyle(fontSize: 16),
                 textAlign: TextAlign.justify,
               ),
@@ -110,8 +110,8 @@ class JobOfferDetails extends StatelessWidget {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              const Text(
-                "requirements here",
+              Text(
+                offer.requirements,
                 style: TextStyle(fontSize: 16),
                 textAlign: TextAlign.justify,
               ),
@@ -120,8 +120,8 @@ class JobOfferDetails extends StatelessWidget {
                 'Accepts remote?',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              const Text(
-                "remote here",
+              Text(
+                offer.remote ? 'Yes' : 'No',
                 style: TextStyle(fontSize: 16),
                 textAlign: TextAlign.justify,
               ),

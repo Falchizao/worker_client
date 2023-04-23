@@ -21,6 +21,9 @@ class _RegisterOfferState extends State<RegisterOffer> {
   String _content = '';
   String _title = '';
   String _hours = '';
+  String _location = '';
+  String _requirements = '';
+  bool _accRemote = false;
 
   Future _addOffer() async {
     showDialog(
@@ -39,7 +42,10 @@ class _RegisterOfferState extends State<RegisterOffer> {
           "content": _content,
           "salary": _salary,
           "title": _title,
-          "hours": _hours
+          "hours": _hours,
+          "location": _location,
+          "remote": _accRemote,
+          "requirements": _requirements,
         }));
 
     Navigator.of(context).pop();
@@ -133,7 +139,7 @@ class _RegisterOfferState extends State<RegisterOffer> {
                   },
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Hours per week',
+                    labelText: 'Hours per day',
                   ),
                   validator: (hours) {
                     if (hours == null) {
@@ -175,6 +181,58 @@ class _RegisterOfferState extends State<RegisterOffer> {
                     }
                     return null;
                   },
+                ),
+                const SizedBox(height: 16.0),
+                TextFormField(
+                  controller: TextEditingController(text: _requirements),
+                  onChanged: (requirement) {
+                    _requirements = requirement;
+                  },
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Requirements',
+                  ),
+                  validator: (requirement) {
+                    return null;
+                  },
+                  onSaved: (requirement) {
+                    if (requirement != null && requirement.isEmpty) {
+                      _requirements = requirement;
+                    }
+                  },
+                ),
+                const SizedBox(height: 20.0),
+                TextFormField(
+                  controller: TextEditingController(text: _location),
+                  onChanged: (location) {
+                    _location = location;
+                  },
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Location',
+                  ),
+                  validator: (location) {
+                    return null;
+                  },
+                  onSaved: (location) {
+                    if (location != null && location.isEmpty) {
+                      _location = location;
+                    }
+                  },
+                ),
+                const SizedBox(height: 20.0),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: _accRemote,
+                      onChanged: (value) {
+                        setState(() {
+                          _accRemote = value!;
+                        });
+                      },
+                    ),
+                    Text('Accepts Remote?'),
+                  ],
                 ),
                 const SizedBox(height: 20.0),
                 ElevatedButton(

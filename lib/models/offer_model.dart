@@ -6,6 +6,9 @@ class Offer {
   final String employer;
   final String title;
   final double hours;
+  final String location;
+  final String requirements;
+  final bool remote;
 
   Offer(
       {required this.id,
@@ -14,7 +17,10 @@ class Offer {
       required this.content,
       required this.employer,
       required this.title,
-      required this.hours});
+      required this.hours,
+      required this.location,
+      required this.requirements,
+      required this.remote});
 
   factory Offer.fromJson(Map<String, dynamic> json) {
     return Offer(
@@ -24,6 +30,9 @@ class Offer {
         content: json['content'],
         title: json['title'],
         hours: json['hours'],
-        employer: json['employer']);
+        employer: json['employer'],
+        location: json['location'],
+        requirements: json['requirements'],
+        remote: json['remote']);
   }
 }

@@ -52,13 +52,15 @@ class FilteredJobOffersPage extends StatelessWidget {
     return List.generate(
         10,
         (index) => Offer(
-              id: index,
-              title: 'Offer $index',
-              employer: 'Creator $index',
-              salary: 1000,
-              content: 'awdawdawd',
-              createdDate: '3434',
-              hours: 10,
-            ));
+            id: index,
+            title: 'Offer $index',
+            employer: 'Creator $index',
+            salary: 1000,
+            content: 'awdawdawd',
+            createdDate: '3434',
+            hours: 10,
+            location: "Rio",
+            remote: true,
+            requirements: "awdawd"));
   }
 }

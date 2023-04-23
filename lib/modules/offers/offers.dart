@@ -49,6 +49,9 @@ class _OffersPageState extends State<OffersPage> {
             employer: eachOffer['employer'],
             title: eachOffer['title'],
             hours: eachOffer['hours'],
+            remote: eachOffer['remote'],
+            requirements: eachOffer['requirements'],
+            location: eachOffer['location'],
           );
           offers.add(offer);
         }

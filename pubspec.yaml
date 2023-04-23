@@ -29,6 +29,9 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+
+  path_provider: ^2.0.8
+  open_file: ^3.2.1
   page_transition: ^2.0.9
   animated_bottom_navigation_bar: ^1.2.0
   flutter_svg: ^2.0.5 

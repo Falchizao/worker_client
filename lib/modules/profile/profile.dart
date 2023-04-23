@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import '../../services/jwtservice.dart';
 import '../../utils/handler.dart';
+import 'package:open_file/open_file.dart';
 import '../../utils/requests.dart';
 import '../../widget/details_tile.dart';
 
@@ -30,6 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   final _formKey = GlobalKey<FormState>();
   bool _isSubmitting = false;
+  bool _isGenerating = false;
   String _phoneNumber = '';
   String username = "";
   String email = "";
@@ -56,6 +58,38 @@ class _ProfilePageState extends State<ProfilePage> {
     // await ImeiPlugin.getImei(shouldShowRequestPermissionRationale: false);
     setState(() {
       // _phoneNumber = phoneNumber ?? '';
+    });
+  }
+
+  Future<void> downloadAndOpenPdf() async {
+    setState(() {
+      _isGenerating = true;
+    });
+
+    var token = await JwtService().getToken();
+    var url = '$BASE_URL/curriculum/generate-curriculum';
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+      body: json.encode({
+        'username': username,
+      }),
+    );
+
+    if (response.headers['content-type'] == 'application/pdf') {
+      final tempDir = await getTemporaryDirectory();
+      final pdfFile = File('${tempDir.path}/curriculum.pdf');
+      await pdfFile.writeAsBytes(response.bodyBytes);
+      await OpenFile.open(pdfFile.path);
+    } else {
+      handleToast('Error downloading PDF');
+    }
+
+    setState(() {
+      _isGenerating = true;
     });
   }
 
@@ -297,8 +331,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                 SizedBox(
                                   width: double.infinity,
                                   child: ElevatedButton(
-                                    onPressed: () {},
-                                    child: _isSubmitting
+                                    onPressed: () {
+                                      _isGenerating
+                                          ? null
+                                          : downloadAndOpenPdf();
+                                    },
+                                    child: _isGenerating
                                         ? const CircularProgressIndicator(
                                             valueColor:
                                                 AlwaysStoppedAnimation<Color>(

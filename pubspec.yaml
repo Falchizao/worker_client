@@ -30,7 +30,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
 
-  path_provider: ^2.0.8
+  path_provider: ^2.0.14
   open_file: ^3.2.1
   page_transition: ^2.0.9
   animated_bottom_navigation_bar: ^1.2.0

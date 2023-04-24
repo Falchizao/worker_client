@@ -89,7 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     setState(() {
-      _isGenerating = true;
+      _isGenerating = false;
     });
   }
 

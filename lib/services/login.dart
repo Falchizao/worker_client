@@ -46,9 +46,10 @@ class _LoginPageState extends State<LoginPage> {
 
     if (response.statusCode == 200) {
       dynamic unserializable = jsonDecode(response.body);
+      JwtService().removeToken();
+      JwtService().removeRole();
       JwtService().setToken(unserializable["token"]);
-      JwtService().setRole("COMPANY");
-      // JwtService().setRole(unserializable["user_role"]);
+      JwtService().setRole(unserializable["user_role"]);
       Get.to(() => RootPage());
     } else {
       handleToast(response.body);

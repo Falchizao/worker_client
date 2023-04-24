@@ -6,6 +6,9 @@ import '../../utils/requests.dart';
 import '../../services/jwtservice.dart';
 import '../../models/user_model.dart';
 import 'dart:convert';
+import 'package:open_file/open_file.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
 class UserProfileVisualizer extends StatefulWidget {
   final User user;
@@ -26,13 +29,14 @@ class _UserProfileVisualizerState extends State<UserProfileVisualizer> {
   String userDescription = "";
   String userLocation = "";
   String xp = "";
+  bool _isGenerating = false;
   late var token;
   bool isLoading = true;
   @override
   void initState() {
     super.initState();
     _fetchUserDetails();
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       setState(() {
         isLoading = false;
       });
@@ -57,6 +61,38 @@ class _UserProfileVisualizerState extends State<UserProfileVisualizer> {
     } else {
       handleToast("Error fetching user data");
     }
+  }
+
+  Future<void> downloadAndOpenPdf() async {
+    setState(() {
+      _isGenerating = true;
+    });
+
+    var token = await JwtService().getToken();
+    var url = '$BASE_URL/curriculum/generate-curriculum';
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+      body: json.encode({
+        'username': username,
+      }),
+    );
+
+    if (response.headers['content-type'] == 'application/pdf') {
+      final tempDir = await getTemporaryDirectory();
+      final pdfFile = File('${tempDir.path}/curriculum.pdf');
+      await pdfFile.writeAsBytes(response.bodyBytes);
+      await OpenFile.open(pdfFile.path);
+    } else {
+      handleToast('Error downloading PDF');
+    }
+
+    setState(() {
+      _isGenerating = false;
+    });
   }
 
   Future<void> _followUser() async {
@@ -195,6 +231,25 @@ class _UserProfileVisualizerState extends State<UserProfileVisualizer> {
                                     child: Text(
                                         _isFollowing ? 'Unfollow' : 'Follow',
                                         style: const TextStyle(fontSize: 18)),
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                Center(
+                                  child: ElevatedButton(
+                                    onPressed: downloadAndOpenPdf,
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.deepPurple,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 40, vertical: 12),
+                                    ),
+                                    child: _isGenerating
+                                        ? const CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.white),
+                                          )
+                                        : const Text('View Portifolio',
+                                            style: TextStyle(fontSize: 18)),
                                   ),
                                 ),
                               ],

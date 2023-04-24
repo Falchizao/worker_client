@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:faker/faker.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:scarlet_graph/modules/offers/registered_jobs_view.dart';
 import 'package:scarlet_graph/services/jwtservice.dart';
 import '../../models/offer_model.dart';
 import '../../services/share.dart';
@@ -15,6 +16,7 @@ import '../../widget/header.dart';
 import '../../widget/recommended_section.dart';
 import '../../widget/top_jobs.dart';
 import '../media/media_page.dart';
+import 'applied_jobs_view.dart';
 
 class OffersPage extends StatefulWidget {
   OffersPage({super.key});
@@ -25,7 +27,9 @@ class OffersPage extends StatefulWidget {
 
 class _OffersPageState extends State<OffersPage> {
   List<Offer> offers = [];
+  String? role;
   List<String> subMenus = ["Offers", "Social"];
+  late final Future myFuture;
 
   Future _getOffers() async {
     var url = '$BASE_URL/$OFFER';
@@ -67,8 +71,17 @@ class _OffersPageState extends State<OffersPage> {
     setState(() {});
   }
 
+  Future<void> getrole() async {
+    role = await JwtService().getRole();
+  }
+
+  Widget getTabByRole() {
+    return role == 'CANDIDATE' ? AppliedJobsPage() : CompanyJobOffersPage();
+  }
+
   @override
   void initState() {
+    myFuture = getrole();
     _getOffers();
     super.initState();
   }
@@ -76,43 +89,46 @@ class _OffersPageState extends State<OffersPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Social',
-            style: GoogleFonts.pacifico(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          bottom: const TabBar(
-            tabs: [
-              Tab(icon: Icon(Icons.work), text: 'Job Offers'),
-              Tab(icon: Icon(Icons.person), text: 'Media'),
-            ],
-          ),
-        ),
-        body: TabBarView(
-          children: [
-            RefreshIndicator(
-              onRefresh: refreshJobOffers,
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    UserHeader(),
-                    SearchAndFilter(),
-                    RecommendedSection(),
-                    TopJobsSection(),
-                  ],
-                ),
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              'Social',
+              style: GoogleFonts.pacifico(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            MediaPage(),
-          ],
-        ),
-      ),
-    );
+            bottom: const TabBar(tabs: [
+              Tab(icon: Icon(Icons.work), text: 'Job Offers'),
+              Tab(icon: Icon(Icons.person), text: 'Media'),
+              Tab(icon: Icon(Icons.work), text: 'My Jobs'),
+            ]),
+          ),
+          body: FutureBuilder(
+              future: myFuture,
+              builder: (context, snapshot) {
+                return TabBarView(
+                  children: [
+                    RefreshIndicator(
+                      onRefresh: refreshJobOffers,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            UserHeader(),
+                            SearchAndFilter(),
+                            RecommendedSection(),
+                            TopJobsSection(),
+                          ],
+                        ),
+                      ),
+                    ),
+                    MediaPage(),
+                    getTabByRole(),
+                  ],
+                );
+              }),
+        ));
   }
 }

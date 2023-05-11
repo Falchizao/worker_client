@@ -8,12 +8,12 @@ import '../utils/constants.dart';
 import '../utils/requests.dart';
 
 class FilteredJobOffers extends StatefulWidget {
-  final bool fullTime;
-  final bool partTime;
-  final String? location;
+  final bool remote;
+  final String type;
+  final String label;
 
   FilteredJobOffers(
-      {required this.fullTime, required this.partTime, this.location});
+      {required this.type, required this.remote, required this.label});
 
   @override
   _FilteredJobOffersState createState() => _FilteredJobOffersState();
@@ -25,7 +25,7 @@ class _FilteredJobOffersState extends State<FilteredJobOffers> {
     return Scaffold(
       appBar: AppBar(title: Text('Filtered Job Offers')),
       body: FutureBuilder<List<Offer>>(
-        future: fetchOffers(widget.fullTime, widget.partTime, widget.location),
+        future: fetchOffers(widget.remote, widget.type),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
@@ -48,12 +48,11 @@ class _FilteredJobOffersState extends State<FilteredJobOffers> {
     );
   }
 
-  Future<List<Offer>> fetchOffers(
-      bool fulltime, bool partTime, String? location) async {
-    var url = '$BASE_URL/$OFFER';
+  Future<List<Offer>> fetchOffers(bool remote, String? type) async {
+    var url = '$BASE_URL/$OFFER/filter';
     var token = await JwtService().getToken();
 
-    var response = await http.get(Uri.parse(url), headers: {
+    var response = await http.post(Uri.parse(url), headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token'
     });

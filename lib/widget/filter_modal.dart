@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'filter_job_offers.dart';
 
 class FilterModal extends StatefulWidget {
@@ -8,10 +8,25 @@ class FilterModal extends StatefulWidget {
 }
 
 class _FilterModalState extends State<FilterModal> {
-  bool _fullTime = false;
-  bool _partTime = false;
   bool _homeOffice = false;
-  String? _location;
+  bool offertype = true;
+  late final SharedPreferences _prefs;
+
+  @override
+  void initState() {
+    super.initState();
+    _carregarSharedPreferences();
+  }
+
+  Future<void> _carregarSharedPreferences() async {
+    _prefs = await SharedPreferences.getInstance();
+    setState(() {});
+  }
+
+  void _savePrefs() {
+    _prefs.setBool('remote', _homeOffice);
+    _prefs.setBool('offertype', offertype);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,25 +35,6 @@ class _FilterModalState extends State<FilterModal> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Job Type'),
-          CheckboxListTile(
-            title: const Text('Full Time'),
-            value: _fullTime,
-            onChanged: (bool? value) {
-              setState(() {
-                _fullTime = value!;
-              });
-            },
-          ),
-          CheckboxListTile(
-            title: const Text('Part Time'),
-            value: _partTime,
-            onChanged: (bool? value) {
-              setState(() {
-                _partTime = value!;
-              });
-            },
-          ),
           CheckboxListTile(
             title: const Text('Home Office'),
             value: _homeOffice,
@@ -49,20 +45,19 @@ class _FilterModalState extends State<FilterModal> {
             },
           ),
           const Divider(),
-          const Text('Location'),
-          DropdownButton<String>(
-            value: _location,
-            hint: const Text('Select location'),
-            items: ['Brazil', 'United States', 'Spain', 'United Kingdom']
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
+          const Text('Full Time?'),
+          DropdownButton<bool>(
+            hint: Text("Full Time?"),
+            value: offertype,
+            items: [true, false].map((bool value) {
+              return DropdownMenuItem<bool>(
                 value: value,
-                child: Text(value),
+                child: Text(value ? 'True' : 'False'),
               );
             }).toList(),
-            onChanged: (String? value) {
+            onChanged: (bool? newValue) {
               setState(() {
-                _location = value;
+                offertype = newValue ?? true;
               });
             },
           ),
@@ -70,17 +65,8 @@ class _FilterModalState extends State<FilterModal> {
           Center(
             child: ElevatedButton(
               onPressed: () {
+                _savePrefs();
                 Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => FilteredJobOffers(
-                      fullTime: _fullTime,
-                      partTime: _partTime,
-                      location: _location,
-                    ),
-                  ),
-                );
               },
               child: const Text('Apply Filters'),
             ),

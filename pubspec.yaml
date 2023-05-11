@@ -29,16 +29,20 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-
+  firebase_auth: ^4.1.3
+  firebase_core: ^2.11.0
+  flutterfire_ui: ^0.4.3+20
+  cloud_firestore: ^4.0.5
   path_provider: ^2.0.8
   open_file: ^3.2.1
   page_transition: ^2.0.9
   animated_bottom_navigation_bar: ^1.2.0
-  flutter_svg: ^2.0.5 
   flutter_staggered_grid_view: ^0.6.2
   flutter_launcher_icons: ^0.13.0
   google_fonts: ^4.0.3
   http: ^0.13.5
+  maps_launcher: ^2.2.0
+  flutter_native_splash: ^2.2.19
   provider: ^6.0.1
   web_socket_channel: ^2.1.0
   url_launcher: ^6.1.10
@@ -65,6 +69,10 @@ flutter_icons:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_native_splash:
+  color: "#42a5f5"
+  image: images/SplashScreen.v1.png
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

@@ -1,10 +1,12 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import '../../helper/helper_function.dart';
+import '../../models/dialog_model.dart';
 import '../../models/offer_model.dart';
 import '../../models/user_model.dart';
+import '../../services/firebase_db.dart';
 import '../../services/jwtservice.dart';
 import '../../utils/handler.dart';
 import '../../utils/requests.dart';
@@ -67,6 +69,47 @@ class JobOfferDetailsTab extends StatelessWidget {
 
 class JobApplicantsTab extends StatelessWidget {
   final Offer offer;
+  DatabaseService dbSv = DatabaseService();
+  late String currentUsername;
+
+  selectUserForRole(String username) async {
+    var token = await JwtService().getToken();
+
+    final body = {
+      'username': username,
+      'offer_id': offer.id,
+    };
+
+    await http.post(Uri.parse('$BASE_URL/email/sendEmail'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+        body: jsonEncode(body));
+
+    handleToast('Email sent successfully!');
+    await HelperFunctions.getUserNameFromSF().then((val) {
+      currentUsername = val!;
+    });
+
+    dbSv.instantiateGroup(currentUsername, '${offer.title} - $username');
+  }
+
+  void showConfirmationDialog(BuildContext context, String username) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ConfirmationDialog(
+          title: 'Select This Candidate',
+          content: 'Are you sure you want to proceed?',
+          onConfirm: () {
+            selectUserForRole(username);
+          },
+          onDismiss: () {},
+        );
+      },
+    );
+  }
 
   JobApplicantsTab({required this.offer});
 
@@ -80,6 +123,12 @@ class JobApplicantsTab extends StatelessWidget {
             itemCount: snapshot.data!.length,
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
+                  trailing: IconButton(
+                    icon: const Icon(Icons.check, color: Colors.green),
+                    onPressed: () async {
+                      showConfirmationDialog(context, snapshot.data![index]);
+                    },
+                  ),
                   title: Text(snapshot.data![index]),
                   onTap: () {
                     User user = User("", snapshot.data![index], "");

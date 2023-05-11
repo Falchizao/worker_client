@@ -33,7 +33,11 @@ class JwtService {
 
   Future<void> setRole(String role) async {
     final SharedPreferences prefs = await _prefs;
-    await prefs.setString('user_role', role);
+    try {
+      await prefs.setString('user_role', role);
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> removeRole() async {

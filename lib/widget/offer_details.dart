@@ -1,12 +1,11 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import "package:http/http.dart" as http;
 import '../models/offer_model.dart';
 import '../services/jwtservice.dart';
-import '../utils/constants.dart';
 import '../utils/handler.dart';
+import '../utils/maps.dart';
 import '../utils/requests.dart';
 
 class JobOfferDetails extends StatelessWidget {
@@ -94,6 +93,21 @@ class JobOfferDetails extends StatelessWidget {
                 textAlign: TextAlign.justify,
               ),
               const SizedBox(height: 16),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    getAddress(offer.location);
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    child: Text(
+                      'View in Maps',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
               const Text(
                 'Job Description',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),

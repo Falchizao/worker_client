@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../services/firebase_auth.dart';
 import '../services/jwtservice.dart';
 import '../utils/handler.dart';
 import '../utils/requests.dart';
@@ -12,6 +13,7 @@ class UserHeader extends StatefulWidget {
 }
 
 class _UserHeaderState extends State<UserHeader> {
+  AuthService authService = AuthService();
   String username = "";
   bool isLoading = true;
   late final Future myFuture;

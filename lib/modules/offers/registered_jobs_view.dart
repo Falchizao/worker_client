@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../../models/offer_model.dart';
 import '../../services/jwtservice.dart';
+import '../../services/offer_service.dart';
 import '../../utils/handler.dart';
 import '../../utils/requests.dart';
 import 'offer_details_with_applicants.dart';
@@ -41,7 +42,7 @@ class CompanyJobOffersPage extends StatelessWidget {
                     IconButton(
                       icon: const Icon(Icons.delete, color: Colors.red),
                       onPressed: () {
-                        // deleteJobOffer(snapshot.data![index]);
+                        deleteJobOffer(snapshot.data![index]);
                       },
                     ),
                   ],

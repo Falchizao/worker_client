@@ -16,7 +16,7 @@ class RecommendedSection extends StatefulWidget {
 
 class _RecommendedSectionState extends State<RecommendedSection> {
   Future<void> refresh() async {
-    fetchOffers();
+    fetchRecommendedOffers();
     await Future.delayed(Duration(seconds: 2));
 
     setState(() {});
@@ -36,7 +36,7 @@ class _RecommendedSectionState extends State<RecommendedSection> {
         ),
         const SizedBox(height: 10),
         FutureBuilder<List<Offer>>(
-          future: fetchOffers(),
+          future: fetchRecommendedOffers(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return Container(
@@ -59,8 +59,8 @@ class _RecommendedSectionState extends State<RecommendedSection> {
     );
   }
 
-  Future<List<Offer>> fetchOffers() async {
-    var url = '$BASE_URL/$OFFER';
+  Future<List<Offer>> fetchRecommendedOffers() async {
+    var url = '$BASE_URL/$OFFER/Recommended';
     var token = await JwtService().getToken();
 
     var response = await http.get(Uri.parse(url), headers: {
@@ -72,7 +72,7 @@ class _RecommendedSectionState extends State<RecommendedSection> {
       List jsonResponse = json.decode(response.body);
       return jsonResponse.map((offer) => Offer.fromJson(offer)).toList();
     } else {
-      throw Exception('Failed to load jobs');
+      throw Exception('Failed to load recommended jobs');
     }
   }
 }

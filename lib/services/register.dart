@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import "package:http/http.dart" as http;
+import 'package:scarlet_graph/services/firebase_auth.dart';
 import 'package:scarlet_graph/services/login.dart';
+import 'package:scarlet_graph/services/user_fetch.dart';
 import 'package:scarlet_graph/utils/constants.dart';
 import 'package:scarlet_graph/utils/handler.dart';
 import 'package:scarlet_graph/utils/requests.dart';
+import '../helper/helper_function.dart';
 import '../models/user_model.dart';
-import '../utils/validate.dart';
+import '../widget/snackbar.dart';
 
 class RegisterPage extends StatefulWidget {
   final int role;
@@ -42,11 +45,18 @@ class _RegisterPageState extends State<RegisterPage> {
         body: json.encode({
           'username': user.username,
           'password': user.password,
-          'email': user.email
+          'email': user.email,
+          'role': role
         }));
 
     Navigator.of(context).pop();
     if (response.statusCode == 200) {
+      try {
+        await fetchUserPasswordDomain(user.username, user.password, user.email);
+      } catch (e) {
+        print(e);
+      }
+
       handleToast(response.body);
       Get.offAll(LoginPage());
     } else {

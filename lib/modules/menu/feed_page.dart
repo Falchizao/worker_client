@@ -1,16 +1,15 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:scarlet_graph/services/firebase_auth.dart';
 import '../../services/jwtservice.dart';
 import '../../services/register_offer.dart';
 import '../../services/register_post.dart';
-import '../../utils/constants.dart';
 import '../chat/chat.dart';
 import '../offers/offers.dart';
 import '../profile/profile.dart';
 import '../search/search_page.dart';
-import '../starred/starred_page.dart';
 
 class RootPage extends StatefulWidget {
   @override
@@ -18,12 +17,14 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage> {
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final AuthService authService = AuthService();
   int _currentPage = 0;
 
   List<Widget> pages = [
     OffersPage(),
     SearchPage(),
-    ChatScreen(),
+    ChatPage(),
     ProfilePage(),
   ];
 
@@ -42,9 +43,10 @@ class _RootPageState extends State<RootPage> {
   }
 
   @override
-  void dispose() {
+  void dispose() async {
     JwtService().removeToken();
     JwtService().removeRole();
+    authService.signOut();
     super.dispose();
   }
 

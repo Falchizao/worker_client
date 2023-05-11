@@ -15,7 +15,7 @@ class SearchAndFilter extends StatelessWidget {
           Expanded(
             child: TextField(
               controller: _searchController,
-              onChanged: (query) {}, // Remove the onChanged handler
+              onChanged: (query) {},
               decoration: InputDecoration(
                 hintText: 'Search jobs...',
                 border: OutlineInputBorder(
@@ -28,7 +28,7 @@ class SearchAndFilter extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => FilteredJobOffersPage(
-                          filterConfig: {}, // Replace with your filter configuration
+                          filterConfig: {},
                           query: _searchController.text,
                         ),
                       ),

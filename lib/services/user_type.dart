@@ -134,7 +134,7 @@ class _SelectPageState extends State<SelectPage> {
       title: Text(
         // ignore: prefer_interpolation_to_compose_strings
         'I agree to the Terms and Conditions  \n' + _getTerms(),
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Colors.white, fontSize: 12),
       ),
       value: _isChecked,
       onChanged: (bool? value) {

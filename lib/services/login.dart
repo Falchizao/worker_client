@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import "package:http/http.dart" as http;
+import 'package:scarlet_graph/helper/helper_function.dart';
+import 'package:scarlet_graph/services/firebase_auth.dart';
 import 'package:scarlet_graph/utils/constants.dart';
 import 'package:scarlet_graph/utils/requests.dart';
 import '../models/user_model.dart';
@@ -12,6 +15,8 @@ import '../modules/menu/feed_page.dart';
 import '../utils/handler.dart';
 import 'package:get/get.dart';
 import '../utils/validate.dart';
+import '../widget/snackbar.dart';
+import 'firebase_db.dart';
 import 'jwtservice.dart';
 
 void main() => runApp(const LoginPage());
@@ -23,6 +28,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  AuthService authService = AuthService();
   final jwtService = JwtService();
   final _formKey = GlobalKey<FormState>();
   User user = User('', '', '');
@@ -50,9 +56,27 @@ class _LoginPageState extends State<LoginPage> {
       JwtService().removeRole();
       JwtService().setToken(unserializable["token"]);
       JwtService().setRole(unserializable["user_role"]);
-      Get.to(() => RootPage());
+      authService.signOut();
+      _fetchUserDetails();
     } else {
       handleToast(response.body);
+    }
+  }
+
+  Future _fetchUserDetails() async {
+    var token = await JwtService().getToken();
+    var url2 = '$BASE_URL/user/findByUsername?name=${user.username}';
+
+    final response2 = await http.post(Uri.parse(url2), headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    });
+
+    if (response2.statusCode == 200) {
+      final userDetails = jsonDecode(response2.body);
+      String pass = userDetails['password'];
+
+      authService.loginFirebase(userDetails['email'], pass, Get.context!);
     }
   }
 

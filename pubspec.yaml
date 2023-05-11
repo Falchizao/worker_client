@@ -34,7 +34,7 @@ dependencies:
   flutterfire_ui: ^0.4.3+20
   cloud_firestore: ^4.0.5
   path_provider: ^2.0.8
-  open_file: ^3.2.1
+  open_file: ^3.3.1
   page_transition: ^2.0.9
   animated_bottom_navigation_bar: ^1.2.0
   flutter_staggered_grid_view: ^0.6.2

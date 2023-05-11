@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "604638958630",
+    "project_id": "scarletgraph-e2fee",
+    "storage_bucket": "scarletgraph-e2fee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604638958630:android:a2275b3fe62e1a6c0702e7",
+        "android_client_info": {
+          "package_name": "com.example.scarlet_graph"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "604638958630-b5i31nk4lm03o4icfa41di62ugvekgbj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYEnoB6E7EpLXuHK1gcF1L907dAreG1WU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "604638958630-b5i31nk4lm03o4icfa41di62ugvekgbj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -47,7 +47,7 @@ class _SelectPageState extends State<SelectPage> {
                 ),
                 onPressed: () {
                   setState(() {
-                    _selectedIndex = 0;
+                    _selectedIndex = 1;
                     companyColor = Colors.grey;
                     candidateColor = Colors.blue;
                     roleDescText = _roles[_selectedIndex];
@@ -61,7 +61,7 @@ class _SelectPageState extends State<SelectPage> {
                 ),
                 onPressed: () {
                   setState(() {
-                    _selectedIndex = 1;
+                    _selectedIndex = 0;
                     companyColor = Colors.blue;
                     candidateColor = Colors.grey;
                     roleDescText = _roles[_selectedIndex];
@@ -83,7 +83,7 @@ class _SelectPageState extends State<SelectPage> {
           ),
           const SizedBox(height: 10.0),
           Text(
-            _selectedIndex != 0 ? '' : '* This option is only for woman',
+            _selectedIndex != 1 ? '' : '* This option is only for woman',
             textAlign: TextAlign.center,
             textDirection: TextDirection.ltr,
             style: GoogleFonts.pacifico(
@@ -94,13 +94,13 @@ class _SelectPageState extends State<SelectPage> {
           ),
           const SizedBox(height: 10.0),
           Container(
-            child: _selectedIndex != 0 ? Text("") : GetCheckbox(),
+            child: _selectedIndex != 1 ? Text("") : GetCheckbox(),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          if (_selectedIndex == 0 && !_isChecked) {
+          if (_selectedIndex == 1 && !_isChecked) {
             handleToast("You must agree with the terms!".tr);
             return;
           }

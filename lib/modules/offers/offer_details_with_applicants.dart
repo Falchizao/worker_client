@@ -92,7 +92,8 @@ class JobApplicantsTab extends StatelessWidget {
       currentUsername = val!;
     });
 
-    dbSv.instantiateGroup(currentUsername, '${offer.title} - $username');
+    dbSv.instantiateGroup(
+        currentUsername, username, '${offer.title} - $username');
   }
 
   void showConfirmationDialog(BuildContext context, String username) {

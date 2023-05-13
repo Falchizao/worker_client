@@ -186,28 +186,28 @@ class _ChatPageState extends State<ChatPage> {
                       primary: Theme.of(context).primaryColor),
                   child: const Text("CANCEL"),
                 ),
-                ElevatedButton(
-                  onPressed: () async {
-                    if (groupName != "") {
-                      setState(() {
-                        _isLoading = true;
-                      });
-                      DatabaseService(
-                              uid: FirebaseAuth.instance.currentUser!.uid)
-                          .createGroup(userName,
-                              FirebaseAuth.instance.currentUser!.uid, groupName)
-                          .whenComplete(() {
-                        _isLoading = false;
-                      });
-                      Navigator.of(context).pop();
-                      showSnackbar(
-                          context, Colors.green, "Group created successfully.");
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).primaryColor),
-                  child: const Text("CREATE"),
-                )
+                // ElevatedButton(
+                //   onPressed: () async {
+                //     if (groupName != "") {
+                //       setState(() {
+                //         _isLoading = true;
+                //       });
+                //       DatabaseService(
+                //               uid: FirebaseAuth.instance.currentUser!.uid)
+                //           .createGroup(userName,
+                //               FirebaseAuth.instance.currentUser!.uid, groupName)
+                //           .whenComplete(() {
+                //         _isLoading = false;
+                //       });
+                //       Navigator.of(context).pop();
+                //       showSnackbar(
+                //           context, Colors.green, "Group created successfully.");
+                //     }
+                //   },
+                //   style: ElevatedButton.styleFrom(
+                //       primary: Theme.of(context).primaryColor),
+                //   child: const Text("CREATE"),
+                // )
               ],
             );
           }));

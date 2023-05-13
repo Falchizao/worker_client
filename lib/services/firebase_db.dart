@@ -47,13 +47,15 @@ class DatabaseService {
     return userCollection.doc(uid).snapshots();
   }
 
-  instantiateGroup(String username, String groupname) {
+  instantiateGroup(String username, String employername, String groupname) {
     uid = FirebaseAuth.instance.currentUser!.uid;
-    createGroup(username, FirebaseAuth.instance.currentUser!.uid, groupname);
+    createGroup(username, employername, FirebaseAuth.instance.currentUser!.uid,
+        groupname);
   }
 
   // creating a group
-  Future createGroup(String userName, String id, String groupName) async {
+  Future createGroup(String userName, String employername, String uid,
+      String groupName) async {
     String ownerName = '';
     await HelperFunctions.getUserNameFromSF().then((val) {
       ownerName = val ?? '';
@@ -62,7 +64,7 @@ class DatabaseService {
     DocumentReference groupDocumentReference = await groupCollection.add({
       "groupName": groupName,
       "groupIcon": "",
-      "admin": "${id}_$ownerName",
+      "admin": "${uid}_$ownerName",
       "members": [],
       "groupId": "",
       "recentMessage": "",
@@ -70,15 +72,18 @@ class DatabaseService {
     });
     // update the members
     await groupDocumentReference.update({
-      "members": FieldValue.arrayUnion(["${id}_$ownerName"]),
+      "members": FieldValue.arrayUnion(["${uid}_$ownerName"]),
       "groupId": groupDocumentReference.id,
     });
 
-    // ADD O NOVO
-    //String useruid = await getUserInfoByName(userName);
-    //toggleGroupJoin(groupDocumentReference.id, userName, groupName, useruid);
+    toggleGroupJoin(groupDocumentReference.id, userName, groupName, uid);
 
-    //await getBackToMainUser();
+    // ADD O NOVO
+    String useruid = await getUserInfoByName(employername);
+    toggleGroupJoin(
+        groupDocumentReference.id, employername, groupName, useruid);
+
+    await getBackToMainUser(userName);
 
     DocumentReference userDocumentReference = userCollection.doc(uid);
     return await userDocumentReference.update({
@@ -88,19 +93,35 @@ class DatabaseService {
   }
 
   Future<String> getUserInfoByName(String username) async {
-    await fetchUserPassword(username);
+    dynamic token = await JwtService().getToken();
+    var url = '$BASE_URL/user/findByUsername?name=$username';
 
-    await authService.loginWithUserNameandPassword(targetEmail, cryptedPass);
+    final response = await http.post(Uri.parse(url), headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    });
 
-    await authService.loginFirebase(username, cryptedPass, Get.context!);
-    return uid = FirebaseAuth.instance.currentUser!.uid;
+    final userDetails = jsonDecode(response.body);
+
+    await authService.loginFirebase(
+        userDetails['email'], userDetails['password'], Get.context!);
+    String newuid = FirebaseAuth.instance.currentUser!.uid;
+    return newuid;
   }
 
-  Future<void> getBackToMainUser() async {
-    String? myEmail = await HelperFunctions.getUserEmailFromSF();
-    String? myPassword = await HelperFunctions.getUserPasswordSF();
+  Future<void> getBackToMainUser(String mainUser) async {
+    dynamic token = await JwtService().getToken();
+    var url = '$BASE_URL/user/findByUsername?name=$mainUser';
 
-    await authService.loginWithUserNameandPassword(myEmail!, myPassword!);
+    final response = await http.post(Uri.parse(url), headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    });
+
+    final userDetails = jsonDecode(response.body);
+
+    await authService.loginFirebase(
+        userDetails['email'], userDetails['password'], Get.context!);
   }
 
   // getting the chats
@@ -180,7 +201,8 @@ class DatabaseService {
     });
   }
 
-  Future<void> fetchUserPassword(String username) async {
+  Future<String> fetchUserPassword(String username) async {
+    String password;
     dynamic token = await JwtService().getToken();
     var url = '$BASE_URL/user/findByUsername?name=$username';
 
@@ -192,10 +214,10 @@ class DatabaseService {
     if (response.statusCode == 200) {
       final userDetails = jsonDecode(response.body);
       cryptedPass = userDetails['password'];
-      targetEmail = userDetails['email'];
     } else {
       handleToast("Error fetching user data");
     }
+    return cryptedPass;
   }
 }
 

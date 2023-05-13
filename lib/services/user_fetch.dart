@@ -50,7 +50,6 @@ Future<void> fetchUserPasswordDomain(
       await HelperFunctions.saveUserLoggedInStatus(true);
       await HelperFunctions.saveUserEmailSF(email);
       await HelperFunctions.saveUserNameSF(username);
-      //save n sei onde
     } else {
       showSnackbar(Get.context, Colors.red, value);
     }

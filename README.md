@@ -2,7 +2,7 @@
 Scarlet_graph é uma aplicação mobile para meu trabalho de conclusão de curso 2 em Análise e Desenvolvimento de Sistemas na UTFPR
 
 trata-se de uma rede social de oferta de vagas empregatícias, porém com o diferencial de ser apenas para o público feminino.
-Conta um algumas features de geração de portfolio automático, sistema de chat e conexão com outros usuários.
+Conta um algumas features de geração de portfolio automático, sistema de chat, conexão com outros usuários e muito mais.
 ![login](https://github.com/Falchizao/scarlet-graph-client/assets/80293325/469ee42f-fe33-4562-a7be-d2522d9221e2)
 ![feedpage](https://github.com/Falchizao/scarlet-graph-client/assets/80293325/58a7e2cc-72e3-41bb-bfc2-8163b5fff1ba)
 ![profile](https://github.com/Falchizao/scarlet-graph-client/assets/80293325/ae324f05-87c0-49fa-938a-f450de72d2ec)

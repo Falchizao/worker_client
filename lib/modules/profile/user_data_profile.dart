@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:permission_handler/permission_handler.dart';
 import '../../utils/handler.dart';
 import '../../utils/requests.dart';
 import '../../services/jwtservice.dart';
@@ -82,10 +83,15 @@ class _UserProfileVisualizerState extends State<UserProfileVisualizer> {
     );
 
     if (response.headers['content-type'] == 'application/pdf') {
-      final tempDir = await getTemporaryDirectory();
-      final pdfFile = File('${tempDir.path}/curriculum.pdf');
-      await pdfFile.writeAsBytes(response.bodyBytes);
-      await OpenFile.open(pdfFile.path);
+      if (await Permission.storage.request().isGranted) {
+        final output = await getTemporaryDirectory();
+        final file = File("${output.path}/document.pdf");
+        await file.writeAsBytes(response.bodyBytes, flush: true);
+        await OpenFile.open(file.path);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Please grant storage permission')));
+      }
     } else {
       handleToast('Error downloading PDF');
     }

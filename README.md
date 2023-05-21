@@ -21,3 +21,5 @@ Conta um algumas features de geração de portfolio automático, sistema de chat
 ![addingoffer](https://github.com/Falchizao/scarlet-graph-client/assets/80293325/ac1c5403-1ee5-445e-9493-1410f023b831)
 ![addpost](https://github.com/Falchizao/scarlet-graph-client/assets/80293325/1e2a3f8c-531e-4fbc-81fa-08aa9f2eea12)
 ![chatzero](https://github.com/Falchizao/scarlet-graph-client/assets/80293325/1c6b9e95-4bb4-4c95-85fb-e28ddc424c82)
+![curriculum](https://github.com/Falchizao/scarlet-graph-client/assets/80293325/91378773-a328-4625-85c9-4e91fcf70d82)
+![emailmessage](https://github.com/Falchizao/scarlet-graph-client/assets/80293325/955b5774-bcab-4b38-9550-220d9f1f05fb)

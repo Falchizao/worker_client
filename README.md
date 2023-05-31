@@ -4,6 +4,8 @@ Scarlet_graph é uma aplicação mobile para meu trabalho de conclusão de curso
 trata-se de uma rede social de oferta de vagas empregatícias, porém com o diferencial de ser apenas para o público feminino.
 Conta um algumas features de geração de portfolio automático, sistema de chat, conexão com outros usuários e muito mais.
 
+tá com os SETSTATE BRABO kkkkkkk, n migrei pro GETX
+
 
 
 
